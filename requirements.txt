@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 sqlalchemy
 sqlmodel
+pydantic
+pydantic[email]
