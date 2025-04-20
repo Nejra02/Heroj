@@ -6,3 +6,5 @@ class Pitanja(SQLModel, table = True):
     tacan: str
     netacan1: str
     netacan2: str
+
+    
