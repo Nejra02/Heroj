@@ -4,6 +4,7 @@ from models import user_model,user_povreda_model,user_simptom_model,pitanja_mode
 from database import engine
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+from controllers import user_controller
 
 
 def create_db_and_tables():
@@ -28,7 +29,4 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
-@app.get("/")
-def index():
-  return {"data": {"name": "Hello", "nesto": "World"}}
+app.include_router(user_controller.router, prefix="/users", tags=["Users"])
