@@ -4,8 +4,12 @@ function LandingPage() {
   const [pomoci, setPomoci] = useState([]);
   const [search, setSearch] = useState('');
 
+
   useEffect(() => {
-    fetch('http://localhost:8000/pomoc/random?count=3')
+    const hostname = window.location.hostname;
+    const apiBase = hostname === 'localhost' ? 'http://localhost:8000' : `http://${hostname}:8000`;
+  
+    fetch(`${apiBase}/pomoc/random?count=3`)
       .then(res => res.json())
       .then(data => {
         setPomoci(data);
