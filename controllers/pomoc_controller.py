@@ -11,10 +11,9 @@ from typing import List
 
 @router.get("/pomoc/random", response_model=List[PomocRead])
 def read_random_pomoci(
-    db: Session = Depends(get_db),
-    count: int = Query(3)
+    db: Session = Depends(get_db)
 ):
-    return get_random_pomoci(db, count)
+    return get_random_pomoci(db)
 
 @router.get("/pomoc/{pomoc_id}", response_model=PomocRead)
 def read_pomoc(pomoc_id: int, db: Session = Depends(get_db)):
