@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from typing import Annotated
-from models import user_model,user_povreda_model,user_simptom_model,pitanja_model,pomoc_model,povreda_model,povreda_simptom_model,simptom_model, forum_model, user_forum_model
+from models import user_model,user_povreda_model,user_simptom_model,pitanja_model,pomoc_model,povreda_model,povreda_simptom_model,simptom_model, forum_model, user_forum_model, osnovne_tehnike_model, pristup_povredi_model, video_model
 from database import engine
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select

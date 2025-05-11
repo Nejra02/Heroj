@@ -1,7 +1,9 @@
-import LandingPage from './pages/LandingPage';
+import Edukacija from "./pages/Edukacija";
+
 
 function App() {
-  return <LandingPage />;
+  return <Edukacija />;
 }
 
 export default App;
+
