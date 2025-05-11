@@ -5,7 +5,6 @@ const SignIn = () => {
   return (
     <div className="container-fluid">
       <div className="row min-vh-100">
-        {/* Image Section */}
         <div className="col-lg-6 d-none d-lg-block p-0">
           <div className="image-container">
             <img src="/signinPhoto.jpg" alt="Sign In" className="img-fluid" />
