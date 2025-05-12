@@ -1,5 +1,6 @@
 from sqlmodel import Session
 from models.pomoc_model import Pomoc
+from models.povreda_model import Povreda
 from schemas.pomoc_schema import PomocRead
 from sqlalchemy.orm import Session
 
@@ -21,3 +22,9 @@ def get_random_pomoci(db: Session):
     capslock_pomoci = [p for p in all_pomoci if p.naziv.isupper()]
     return [PomocRead.from_orm(p) for p in capslock_pomoci]
 
+def get_pomoc_for_povreda(db: Session, povreda_id: int):
+    povreda = db.query(Povreda).filter(Povreda.povreda_id == povreda_id).first()
+    if povreda:
+        pomoc = db.query(Pomoc).filter(Pomoc.pomoc_id == povreda.pomoc_id).first()
+        return pomoc
+    return None

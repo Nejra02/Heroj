@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../styles/landingpage.css";
+import { useNavigate } from "react-router-dom";
+
 
 function LandingPage() {
   const [pomoci, setPomoci] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -16,6 +20,24 @@ function LandingPage() {
       .then((data) => setPomoci(data))
       .catch((err) => console.error("Greška:", err));
   }, []);
+
+  const handleSymptomSearch = async () => {
+  try {
+    const hostname = window.location.hostname;
+    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+    const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`);
+    if (!response.ok) {
+      throw new Error("Simptom nije pronađen.");
+    }
+
+    const data = await response.json();
+    localStorage.setItem("povrede", JSON.stringify(data)); // čuvamo u browser
+    navigate("/dashboard");
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
   return (
     <div className="landing-wrapper">
@@ -34,7 +56,14 @@ function LandingPage() {
               placeholder="Pretraži simptome..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSymptomSearch();
+                }
+              }}
             />
+
           </div>
           <div className="navbar-right">
             <button className="btn signup">Sign Up</button>
