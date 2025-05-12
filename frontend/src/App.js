@@ -1,8 +1,9 @@
-import Edukacija from "./pages/Edukacija";
+
+import  UserDashboard from "./pages/UserDashboard";
 
 
 function App() {
-  return <Edukacija />;
+  return <UserDashboard />;
 }
 
 export default App;
