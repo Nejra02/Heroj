@@ -12,3 +12,6 @@ def get_simptom_by_id(db: Session, simptom_id: int):
         "naziv": simptom.naziv
         
     }
+
+def get_simptom_by_name(db: Session, name: str):
+    return db.query(Simptom).filter(Simptom.naziv.ilike(name)).first()

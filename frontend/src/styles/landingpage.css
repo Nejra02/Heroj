@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, var(--red), #ffe6e6);
+  background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
 }
 
 .landing-wrapper {
@@ -23,6 +23,7 @@ body {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
   margin: 30px auto;
   max-width: 1200px;
+  min-height: 87.9vh;
 }
 
 /* Navbar INSIDE bubble */
@@ -179,7 +180,7 @@ body {
   margin: 30px auto;
   max-width: 900px;
   padding: 24px 30px;
-  background-color: #fffefc;
+  background-color: var(--cream);
   border: 1px solid #ddd;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
