@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/signin.css';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+
 const SignUp = () => {
   return (
     <div className="container-fluid">
