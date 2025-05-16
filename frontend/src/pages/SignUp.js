@@ -2,6 +2,12 @@ import React from 'react';
 import '../styles/signin.css';
 
 const SignUp = () => {
+  const handleSignIn = () => {
+    // Logic to navigate to Sign In page
+    window.location.href = '/signin';
+  };
+
+
   return (
     <div className="container-fluid">
       <div className="row min-vh-100">
@@ -20,13 +26,23 @@ const SignUp = () => {
           <div className="form-container p-4 p-md-5">
             <div className="text-center mb-5">
               <h2 className="fw-bold">Registracija</h2>
-              <p className="text-muted">Već imaš nalog? <a href="#" className="text-link">Prijavi se.</a></p>
+              <p className="text-muted">Već imaš nalog? <a href="#" className="text-link" onClick={handleSignIn}>Prijavi se.</a></p>
             </div>
             
             <form>
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">Ime i prezime</label>
-                <input type="text" className="form-control" id="name" placeholder="Unesi ime i prezime" />
+              <div className="row">
+                <div className="col-md-6 mb-3">
+                  <label htmlFor="name" className="form-label">Ime</label>
+                  <input type="text" className="form-control" id="name" placeholder="Unesi ime" />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label htmlFor="surname" className="form-label">Prezime</label>
+                  <input type="text" className="form-control" id="surname" placeholder="Unesi prezime" />
+                </div>
+              </div>
+              <div className="mb-3">  
+                <label htmlFor="username" className="form-label">Korisničko ime</label>
+                <input type="text" className="form-control" id="username" placeholder="Unesi korisničko ime" />
               </div>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email adresa</label>

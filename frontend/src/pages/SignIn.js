@@ -1,7 +1,11 @@
 import React from 'react';
 import '../styles/signin.css';
-
+import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
+  const handleSignUp = () => {
+    // Logic to navigate to Sign Up page
+    window.location.href = '/signup';
+  };
   return (
     <div className="container-fluid">
       <div className="row min-vh-100">
@@ -20,7 +24,7 @@ const SignIn = () => {
           <div className="form-container p-4 p-md-5">
             <div className="text-center mb-5">
               <h2 className="fw-bold">Prijavi se</h2>
-              <p className="text-muted">Još nisi registrovan? <a href="#" className="text-link">Registruj se.</a></p>
+              <p className="text-muted" onClick={handleSignUp} >Još nisi registrovan? <a href="#" className="text-link">Registruj se.</a></p>
             </div>
             
             <form>

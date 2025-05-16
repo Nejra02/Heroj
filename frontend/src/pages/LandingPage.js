@@ -39,6 +39,13 @@ function LandingPage() {
   }
 };
 
+const handleGoToSignup = () => {
+    navigate('/signup'); 
+  }
+const handleGoToSignIn= () => {
+    navigate('/signin');
+  }
+
   return (
     <div className="landing-wrapper">
       {/* SVE UNUTAR JEDNOG BUBBLE-a */}
@@ -66,8 +73,8 @@ function LandingPage() {
 
           </div>
           <div className="navbar-right">
-            <button className="btn signup">Sign Up</button>
-            <button className="btn login">Log In</button>
+            <button className="btn signup" onClick={handleGoToSignup} >Sign Up</button>
+            <button className="btn login" onClick={handleGoToSignIn}>Log In</button>
           </div>
         </nav>
 
