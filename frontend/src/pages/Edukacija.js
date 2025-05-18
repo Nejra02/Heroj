@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import "../styles/Edukacija.css";
+import Kviz from "./Kviz.js";
 
 export default function Edukacija() {
   const [openOsnovne, setOpenOsnovne] = useState(false);
@@ -24,9 +27,9 @@ export default function Edukacija() {
   return (
     <div className="page">
       <nav className="navbar">
-        <div className="logo">Budi nečiji heroj</div>
+        <div className="logo">Budi nečiji heroj!</div>
         <div className="nav-links">
-          <a href="/kviz">Kviz</a>
+          <Link to="/kviz">Kviz</Link>
           <a href="/forum">Forum</a>
         </div>
       </nav>

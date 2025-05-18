@@ -4,7 +4,9 @@
   --tekst: #222;
   --bijela: #ffffff;
 }
-
+*{
+  background-color: var(--bijela);
+}
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -63,15 +65,18 @@ body {
   flex: 1;
   min-width: 280px;
   color: var(--navy);
+  background-color: var(--pozadina);
 }
 
 .hero-text h1 {
   font-size: 2rem;
   margin-bottom: 10px;
+  background-color: var(--pozadina);
 }
 
 .hero-text p {
   margin-bottom: 20px;
+  background-color: var(--pozadina);
 }
 
 

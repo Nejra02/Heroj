@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/UserDashboard.css";
 
 export default function UserDashboard() {
@@ -46,14 +47,14 @@ export default function UserDashboard() {
       <div className="dashboard-body">
         <aside className="sidebar">
           <div className="sidebar-section">
-            <button>Kviz</button>
+            <Link to="/kviz">Kviz</Link>
             <p className="sidebar-text">
               Pristupite kvizu i provjerite svoje znanje prve pomoći.
             </p>
           </div>
 
           <div className="sidebar-section">
-            <button>Edukacija</button>
+            <Link to="/edukacija">Edukacija</Link>
             <p className="sidebar-text">
               Pogledajte edukacijske videe i slike za prvu pomoć.
             </p>
