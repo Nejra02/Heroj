@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/landingpage.css";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom"; // ✅ ispravno
 
 function LandingPage() {
   const [pomoci, setPomoci] = useState([]);
@@ -73,8 +73,13 @@ const handleGoToSignIn= () => {
 
           </div>
           <div className="navbar-right">
-            <button className="btn signup" onClick={handleGoToSignup} >Sign Up</button>
-            <button className="btn login" onClick={handleGoToSignIn}>Log In</button>
+          <Link to="/signup">
+            <button className="btn signup">Sign Up</button>
+          </Link>
+
+          <Link to="/signin">
+            <button className="btn login">Log In</button>
+          </Link>
           </div>
         </nav>
 
