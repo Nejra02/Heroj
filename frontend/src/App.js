@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Kviz from "./pages/Kviz";
 import Edukacija from "./pages/Edukacija";
 import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboad";
 
 import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn'; // Removed duplicate import
@@ -16,6 +17,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/user_dashboard" element={<UserDashboard />} />
+        <Route path="/admin_dashboard" element={<AdminDashboard />} />
         <Route path="/kviz" element={<Kviz />} />
         <Route path="/edukacija" element={<Edukacija />} />
         

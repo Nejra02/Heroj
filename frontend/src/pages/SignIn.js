@@ -22,6 +22,7 @@ const SignIn = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
+        credentials: "include", // koristi ovo ako backend šalje HttpOnly cookie
         body: formData.toString(),
       });
 
@@ -30,14 +31,22 @@ const SignIn = () => {
       }
 
       const data = await response.json();
-      console.log("Token:", data.access_token);
-      alert("Uspešna prijava!");
-      // Save token or redirect here
-      navigate("/");
+      console.log("Token:", data.access_token, "Role:", data.role);
+
+      // Rutiranje zavisno od role
+      if (data.role === "admin") {
+        navigate("/admin_dashboard");
+      } else if (data.role === "user") {
+        navigate("/user_dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       console.error(error.message);
+      alert("Neuspješna prijava. Pokušaj ponovo.");
     }
   };
+
 
   return (
     <div className="container-fluid">

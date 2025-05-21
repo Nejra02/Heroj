@@ -23,7 +23,10 @@ def verify_password(plain_password, hashed_password):
 
 
 def authenticate_user(email: str, password: str, db: Session):
+    print("Email primljen:", email)
     user = db.query(User).filter(User.email == email).first()
+
     if not user or not verify_password(password, user.password):
         return None
     return user
+
