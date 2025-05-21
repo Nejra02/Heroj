@@ -1,0 +1,62 @@
+:root {
+  --dark-red: #780000;
+  --red: #C1121F;
+  --cream: #FDF0D5;
+  --navy: #003049;
+  --blue: #669BBC;
+}
+
+.dashboard-container {
+  padding: 40px 20px;
+  background-color: var(--cream);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard-title {
+  color: var(--dark-red);
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.povreda-card {
+  background-color: white;
+  border: 2px solid var(--red);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+.povreda-card:hover {
+  transform: translateY(-5px);
+}
+
+.povreda-title {
+  color: var(--navy);
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.povreda-opis {
+  color: #333;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.pomoc-koraci {
+  background: white;
+  border: 2px solid var(--red);
+  border-radius: 16px;
+  padding: 20px;
+  list-style-position: inside;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.pomoc-koraci li {
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: var(--navy);
+}
