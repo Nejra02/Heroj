@@ -4,3 +4,10 @@ sqlalchemy
 sqlmodel
 pydantic
 pydantic[email]
+python-multipart
+passlib[bcrypt]
+python-jose[cryptography]
+typing
+contextlib
+python-multipart
+bcrypt

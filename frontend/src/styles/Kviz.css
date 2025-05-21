@@ -1,0 +1,147 @@
+:root {
+  --dark-red: #780000;
+  --red: #C1121F;
+  --cream: #FDF0D5;
+  --navy: #003049;
+  --blue: #669BBC;
+
+  --crvena: #e63946;
+  --pozadina: #fed3c5;
+  --tekst: #222;
+  --bijela: #ffffff;
+}
+
+.kviz-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: white;
+  padding: 1rem;
+}
+
+.kviz-container {
+  max-width: 900px;
+  width: 100%;
+  padding: 2rem;
+  background-color: var(--pozadina);
+  border-radius: 20px;
+  border: 2px solid var(--navy);
+  box-shadow: 0 0 10px rgba(238, 46, 36, 0.3);
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.kviz-container h2 {
+  color: var(--dark-red);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  background-color: var(--pozadina);
+}
+
+.pitanje {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--tekst);
+  background-color: var(--pozadina);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.odgovori {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: var(--pozadina);
+}
+
+.odgovori button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--pozadina);
+  border: 2px solid var(--dark-red);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+}
+
+.odgovori button:hover {
+  background-color: var(--crvena);
+  color: white;
+}
+.kviz-container p{
+    background-color: var(--pozadina);
+    font-weight: 600;
+}
+.restart-btn{
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--pozadina);
+  border: 2px solid var(--dark-red);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+}
+
+.povratak-btn{
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--pozadina);
+  border: 2px solid var(--dark-red);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+
+}
+
+.restart-btn:hover {
+  background-color: var(--crvena);
+  color: white;
+}
+
+
+.povratak-btn:hover {
+  background-color: var(--crvena);
+  color: white;
+}
+
+
+
+@media (max-width: 768px) {
+  .kviz-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .pitanje {
+    font-size: 1.1rem;
+  }
+
+  .odgovori button,
+  .restart-btn {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .kviz-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .pitanje {
+    font-size: 1rem;
+  }
+
+  .odgovori button,
+  .restart-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+}
