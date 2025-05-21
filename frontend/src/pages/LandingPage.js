@@ -38,7 +38,6 @@ function LandingPage() {
     alert(err.message);
   }
 };
-
 const handleGoToSignup = () => {
     navigate('/signup'); 
   }
