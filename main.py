@@ -33,6 +33,7 @@ def get_session():
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
+
 app.include_router(user_controller.router, prefix="/users", tags=["Users"])
 app.include_router(pomoc_controller.router)
 app.include_router(simptom_controller.router)
@@ -40,3 +41,4 @@ app.include_router(povreda_controller.router)
 app.include_router(edukacija_controller.router)
 app.include_router(user_history_controller.router)
 app.include_router(pitanja_controller.router)
+

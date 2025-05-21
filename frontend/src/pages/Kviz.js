@@ -39,7 +39,7 @@ export default function Kviz() {
   };
 
   const handlePovratak = () => {
-    navigate("/"); // promijeni ako je druga ruta
+    navigate("/");
   };
 
   const pokreniPonovo = () => {
