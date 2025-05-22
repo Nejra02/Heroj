@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../styles/landingpage.css";
+import "../styles/main.css";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom"; // ✅ ispravno
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   const [pomoci, setPomoci] = useState([]);

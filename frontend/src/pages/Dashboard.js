@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/main.css";
 import "../styles/landingpage.css";
 import "../styles/dashboard.css";
 import { useNavigate } from "react-router-dom";

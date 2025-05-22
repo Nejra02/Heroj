@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "../styles/main.css";
 import "../styles/landingpage.css";
 
 export default function PovredaDetails() {
@@ -42,7 +43,7 @@ export default function PovredaDetails() {
             <span className="logo-text">Heroj</span>
           </div>
           <div className="navbar-center">
-            <span style={{ fontWeight: "bold", fontSize: "20px", color: "var(--dark-red)" }}>
+            <span style={{ fontWeight: "medium", fontSize: "20px", color: "var(--dark-red)" }}>
               prva pomoć za {data.naziv.toLowerCase()}
             </span>
           </div>

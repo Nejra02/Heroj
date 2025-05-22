@@ -1,16 +1,8 @@
 *{
   font-family: 'Work Sans', sans-serif;
 }
-body { 
-    margin: 0;
-    padding: 0;
+.landing-wrapper {
+  padding: 12px;
+    background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
   }
-  
-  /* Središnji wrapper koji drži sav sadržaj */
-  .app-wrapper {
-    background-color: #b9b5b5;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
+
