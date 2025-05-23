@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import '../styles/signin.css';
+import '../styles/main.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // ✅ ispravno
+import { Link } from 'react-router-dom';
 const SignUp = () => {
   const [formData, setFormData] = useState({
   ime: '',
@@ -29,10 +30,10 @@ const handleSubmit = async (e) => {
       username: formData.username,
       email: formData.email,
       password: formData.password,
-      role: "user" // ili "admin", zavisno od sistema
+      role: "user"
     });
     alert("Registracija uspješna!");
-    window.location.href = "/signin"; // preusmjeri na prijavu
+    window.location.href = "/signin";
   } catch (error) {
     console.error(error);
     alert("Greška pri registraciji.");
@@ -40,40 +41,33 @@ const handleSubmit = async (e) => {
 };
 
   const handleSignIn = () => {
-    // Logic to navigate to Sign In page
     window.location.href = '/signin';
   };
 
 
   return (
-    <div className="container-fluid">
-      <div className="row min-vh-100">
-        <div className="col-lg-6 d-none d-lg-block p-0">
+      <div className="row glavni-row ">
+        <div className="col-lg-6 d-none d-lg-block p-0 align-items-center form-col">
           <div className="image-container">
-            <img src="/signinPhoto.jpg" alt="Sign Up" className="img-fluid" />
-            <div className="overlay-text">
-              <h1>Postani heroj u pravom smislu.</h1>
-              <p>Prijavi se i nastavi svoju misiju.</p>
-            </div>
+            <img src="/signinPhoto.png" alt="Sign Up" className="img-fluid" />
           </div>
         </div>
-        
-        {/* Form Section */}
-        <div className="col-lg-6 d-flex align-items-center justify-content-center">
-          <div className="form-container p-4 p-md-5">
-            <div className="text-center mb-5">
+        <div className="col-lg-6 d-flex align-items-center justify-content-center form-col">
+          <div className="form-container">
+            <div className="text-center mb-3">
               <h2 className="fw-bold">Registracija</h2>
-<p className="text-muted">
-  Već imaš nalog? 
-  <Link to="/signin" className="text-link" onClick={handleSignIn}>
-    Prijavi se.
-  </Link>
-</p>            </div>
+                <p className="text-muted">
+                  Već imaš nalog? 
+                  <Link to="/signin" className="text-link" onClick={handleSignIn}>
+                    Prijavi se.
+                  </Link>
+                </p>           
+            </div>
             
             <form onSubmit={handleSubmit}>
 
               <div className="row">
-                <div className="col-md-6 mb-3">
+                <div className="col-md-6 mb-2">
                   <label htmlFor="name" className="form-label">Ime</label>
                   <input type="text" className="form-control" id="ime" placeholder="Unesi ime" value={formData.ime} onChange={handleChange}  />
                 </div>
@@ -98,20 +92,22 @@ const handleSubmit = async (e) => {
                 <label htmlFor="confirmPassword" className="form-label">Potvrdi šifru</label>
                 <input type="password" className="form-control" id="confirmPassword" placeholder="Potvrdi šifru" value={formData.confirmPassword} onChange={handleChange}  />
               </div>
-              <button type="submit" className="btn btn-primary w-100 mb-3">Registruj se</button>
+              <button type="submit" className="btn btn-danger w-100 mb-3">Postani heroj</button>
+              {/* AKO BUDEMO HTJELI DODATI LOG IN PREKO GOOGLE
               <div className="text-center">
-                <p className="text-muted">Ili registruj se sa</p>
+                <p className="text-muted">Ili prijavi se sa</p>
                 <div className="d-flex justify-content-center gap-3">
                   <button type="button" className="btn btn-outline-secondary rounded-circle social-btn">
                     <i className="bi bi-google"></i>
                   </button>
+                 
                 </div>
               </div>
+              */}
             </form>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

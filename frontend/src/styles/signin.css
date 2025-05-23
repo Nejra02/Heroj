@@ -1,103 +1,204 @@
 :root {
-  --primary-color: #C1121F;
-  --secondary-color: #780000;
-  --white-color: #FFFFFF;
-  --text-color: #003049;
+  --dark-red: #780000;
+  --red: #C1121F;
+  --cream: #FDF0D5;
+  --navy: #003049;
+  --blue: #669BBC;
+  --pozadina: #fed3c5;
+  --rozasaslike: #FFD8D9;
 }
 
-body {
-
-  background-color: #f8f9fa;
+.glavni-row{
+  background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
 }
 
 .image-container {
-  position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
 }
 
 .image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 700px;
+  max-height: 100vh;
+  opacity: 0.85;
+  background-color: inherit;
 }
 
 .overlay-text {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  color: var(--white-color);
-  background: linear-gradient(transparent, var(--primary-color));
+  top: 30px; /* udalji od vrha */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--dark-red);
+  z-index: 10;
+  max-width: 80%;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .overlay-text h1 {
-  font-weight: 700;
-  margin-bottom: 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
+
+/* KOMPAKTNA FORMA */
+
+.form-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ovo centriranje po visini */
+  padding: 20px;
+  background-color: inherit;
+}
+
 
 .form-container {
-  max-width: 450px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
   width: 100%;
+  max-width: 400px;
+  padding: 40px 18px;
 }
 
-.btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  padding: 0.5rem;
-  font-weight: 600;
+/* Kompaktni heading i paragraf */
+.form-container h2 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
 }
 
-.btn-primary:hover {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
+.form-container p {
+  font-size: 0.85rem;
+  margin-bottom: 8px;
 }
 
 .text-link {
-  color: var(--primary-color);
+  color: #C1121F;
   text-decoration: none;
   font-weight: 500;
+  margin-left: 4px;
 }
 
 .text-link:hover {
-  color: var(--secondary-color);
   text-decoration: underline;
 }
-.btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+
+/* Input spacing */
+.form-container .mb-3,
+.form-container .mb-4 {
+  margin-bottom: 10px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.form-control {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  height: 38px;               
+  border-radius: 6px;   
+}
+
+.form-check-label {
+  font-size: 0.8rem;
+}
+
+a.text-link {
+  font-size: 0.8rem;
+}
+
+.btn {
+  font-size: 0.9rem;
+  border-radius: 8px;
 }
 
 .social-btn {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Responsive adjustments */
-@media (max-width: 991.98px) {
+/* RESPONZIVNOST */
+@media (max-width: 991px) {
   .image-container {
-    height: 300px;
-  }
-  
-  .overlay-text {
-    padding: 1rem;
-  }
-  
-  .overlay-text h1 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .form-container {
-    padding: 2rem !important;
+    display: none;
   }
 }
 
-@media (max-width: 575.98px) {
+/* ==== RESPONSIVE STYLING ==== */
+
+/* Telefoni: max širina 576px */
+@media (max-width: 576px) {
   .form-container {
-    padding: 1.5rem !important;
+    padding: 16px;
+    max-width: 100%;
+    margin: 0 12px;
+    border-radius: 12px;
+  }
+
+  .form-container h2 {
+    font-size: 1.1rem;
+  }
+
+  .form-container p {
+    font-size: 0.8rem;
+  }
+
+  .form-control {
+    font-size: 0.8rem;
+    height: 36px;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
   }
 }
+
+/* Tableti */
+@media (max-width: 991px) {
+  .form-container {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .form-control {
+    height: 38px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+  }
+
+  .glavni-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    min-height: 100vh;
+    align-items: center;
+
+  }
+
+  .form-col {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

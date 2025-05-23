@@ -1,8 +1,29 @@
+:root {
+  --dark-red: #780000;
+  --red: #C1121F;
+  --cream: #FDF0D5;
+  --navy: #003049;
+  --blue: #669BBC;
+  --pozadina: #fed3c5;
+  --rozasaslike: #FFD8D9;
+}
+
 *{
   font-family: 'Work Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 .landing-wrapper {
   padding: 12px;
-    background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
-  }
+  background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* ukida horizontalni scroll */
+}
+
+
 

@@ -33,7 +33,7 @@ function LandingPage() {
     }
 
     const data = await response.json();
-    localStorage.setItem("povrede", JSON.stringify(data)); // čuvamo u browser
+    localStorage.setItem("povrede", JSON.stringify(data));
     navigate("/dashboard");
   } catch (err) {
     alert(err.message);
