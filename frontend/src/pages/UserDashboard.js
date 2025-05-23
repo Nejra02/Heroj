@@ -12,35 +12,56 @@ export default function UserDashboard() {
     setUsername("Nejra");
 
     // Fetch backend history for user ID 4
-    fetch("http://localhost:8000/user/4/history")
+    fetch("http://localhost:8000/user/4/history", {
+      credentials: "include",
+    })
+
       .then((res) => res.json())
       .then((data) => setBackendHistory(data))
       .catch((err) => console.error("Greška prilikom dohvata historije:", err));
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (search.trim()) {
-      setManualHistory([search, ...manualHistory]);
-      setSearch("");
+    if (!search.trim()) return;
+
+    try {
+      const hostname = window.location.hostname;
+      const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+      const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Simptom nije pronađen.");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("povrede", JSON.stringify(data));
+
+      // Ako želiš odmah preusmjeriti na prikaz rezultata (ako postoji npr. /dashboard/results):
+      window.location.href = "/dashboard";  // ili useNavigate ako koristiš
+    } catch (err) {
+      alert(err.message);
     }
   };
 
+
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-page">
       <header className="dashboard-header">
         <div className="header-left">
-          <img src="/logo.png" alt="Logo" className="logo" />
-          <span className="username">{username}</span>
+          <img src="/logo.png" alt="Logo"/>
+          <span className="username">Dobrodošli nazad {username} !</span>
         </div>
         <form className="search-form" onSubmit={handleSearch}>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Pretraži simptome/povrede"
+            placeholder="Pretraži simptome..."
           />
-          <button type="submit">Traži</button>
         </form>
       </header>
 
@@ -49,28 +70,28 @@ export default function UserDashboard() {
           <div className="sidebar-section">
             <Link to="/kviz">Kviz</Link>
             <p className="sidebar-text">
-              Pristupite kvizu i provjerite svoje znanje prve pomoći.
+              pristupite kvizu i testirajte svoje znanje prve pomoći
             </p>
           </div>
 
           <div className="sidebar-section">
             <Link to="/edukacija">Edukacija</Link>
             <p className="sidebar-text">
-              Pogledajte edukacijske videe i slike za prvu pomoć.
+              saznajte više o prvoj pomoći
             </p>
           </div>
 
           <div className="sidebar-section">
-            <button>Forum</button>
+            <Link to="/edukacija">Forum</Link>
             <p className="sidebar-text">
-              Budite u kontaktu sa ostalim korisnicima kroz objave i komentare na našem forumu.
+              budite u kontaktu sa ostalim korisnicima kroz objave i komentare
             </p>
           </div>
         </aside>
 
         <main className="content">
           <h2>Historija pretrage</h2>
-
+        <div className="lista">
           <h3>Povrede</h3>
           <ul>
             {backendHistory.povrede.length === 0 ? (
@@ -83,7 +104,8 @@ export default function UserDashboard() {
               ))
             )}
           </ul>
-
+          </div>
+          <div className="lista">
           <h3>Simptomi</h3>
           <ul>
             {backendHistory.simptomi.length === 0 ? (
@@ -94,6 +116,7 @@ export default function UserDashboard() {
               ))
             )}
           </ul>
+          </div>
 
          
         </main>

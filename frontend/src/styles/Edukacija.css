@@ -3,6 +3,7 @@
   --pozadina: #fed3c5;
   --tekst: #222;
   --bijela: #ffffff;
+   --rozasaslike: #FFD8D9;
 }
 *{
   background-color: var(--bijela);
@@ -10,7 +11,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--pozadina);
+  background-color: var(--rozasaslike);
   color: var(--tekst);
 }
 
@@ -21,41 +22,64 @@ body {
 }
 
 /* NAVBAR */
-.navbar {
+.navbar-edukacija { 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--bijela);
-  padding: 15px 40px;
-  
-  
+  background-color: var(--rozasaslike);
+  border-radius: 20px;
+  padding: 10px;
   margin-bottom: 30px;
 }
 
+.lijevo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: inherit;
+}
+
+.lijevo img {
+  width: 60px;
+  height: 60px;
+  background-color: inherit;
+}
+
 .logo {
-  font-size: 1.4rem;
-  font-weight: bold;
-  
+  font-size: 20px;
   color: var(--dark-red);
+  margin-left: 10px;
+  background-color: inherit;
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  background-color: inherit;
+  text-transform: uppercase;
 }
 
 .nav-links a {
-  margin-left: 20px;
-
+  display: inline-block;
+  padding: 0.4rem 1rem;
   text-decoration: none;
-  text-transform: uppercase;
- 
-  font-weight: bold;
   color: var(--dark-red);
-  
+  background-color: var(--rozasaslike);
+  border-radius: 0.5rem;
 }
+
 
 /* HERO SEKCIJA */
 .hero {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  background-color: var(--pozadina);
+  background-color: var(--rozasaslike);
   padding: 30px;
   border-radius: 20px;
   margin-bottom: 30px;
@@ -64,19 +88,20 @@ body {
 .hero-text {
   flex: 1;
   min-width: 280px;
+  font-weight: 700;
   color: var(--navy);
-  background-color: var(--pozadina);
+   background-color: inherit;
 }
 
 .hero-text h1 {
   font-size: 2rem;
   margin-bottom: 10px;
-  background-color: var(--pozadina);
+  background-color: inherit;
 }
 
 .hero-text p {
   margin-bottom: 20px;
-  background-color: var(--pozadina);
+  background-color: inherit;
 }
 
 
@@ -87,13 +112,14 @@ body {
   height: auto;
   margin: 0 auto;
   display: block;
-  
+  background-color: inherit;
  
 }
 
 .hero-image img {
   max-width: 100%;
   height: auto;
+  background-color: inherit;
 }
 
 
@@ -101,15 +127,15 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-  background-color: var(--pozadina);
+  background-color: var(--rozasaslike);
   padding: 20px 20px;
-  border-radius: 16px;
+  border-radius: 20px;
 }
 
 .card {
   background-color: var(--pozadina);
   padding: 20px;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 2px solid var(--dark-red);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -213,5 +239,32 @@ body {
 
   .linija {
     font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-edukacija {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .lijevo {
+    flex-direction: column;
+  }
+
+  .logo {
+    margin-left: 0;
+    height: auto;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    padding: 0.6rem 1.2rem;
   }
 }

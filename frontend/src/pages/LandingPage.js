@@ -74,11 +74,11 @@ const handleGoToSignIn= () => {
           </div>
           <div className="navbar-right">
           <Link to="/signup">
-            <button className="btn signup">Sign Up</button>
+            <button className="btn signup">Registracija</button>
           </Link>
 
           <Link to="/signin">
-            <button className="btn login">Log In</button>
+            <button className="btn login">Prijava</button>
           </Link>
           </div>
         </nav>
