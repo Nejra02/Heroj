@@ -11,6 +11,7 @@ export default function Kviz() {
   const [pitanja, setPitanja] = useState([]);
   const [trenutno, setTrenutno] = useState(0);
   const [odgovori, setOdgovori] = useState([]);
+  const [pregledOdgovori, setPregledOdgovori] = useState([]);
   const [rezultat, setRezultat] = useState(null);
   const [prikaziPregled, setPrikaziPregled] = useState(false);
   const [kvizZapoceo, setKvizZapoceo] = useState(false);
@@ -29,27 +30,26 @@ export default function Kviz() {
   }, []);
 
   const handleOdgovor = (odgovor) => {
-  const trenutnoPitanje = pitanja[trenutno];
-  const noviOdgovori = [
-    ...odgovori,
-    {
-      pitanje: trenutnoPitanje.pitanje,
-      tacan: trenutnoPitanje.tacan,
-      izabrani: odgovor,
-    },
-  ];
+    const trenutnoPitanje = pitanja[trenutno];
+    const noviOdgovori = [
+      ...odgovori,
+      {
+        pitanje: trenutnoPitanje.pitanje,
+        tacan: trenutnoPitanje.tacan,
+        izabrani: odgovor,
+      },
+    ];
 
-  if (trenutno + 1 < pitanja.length) {
-    setOdgovori(noviOdgovori);
-    setTrenutno(trenutno + 1);
-  } else {
-    const tacni = noviOdgovori.filter((o) => o.izabrani === o.tacan).length;
-    setOdgovori(noviOdgovori); // mora prvo ovo
-    setRezultat(tacni);        // pa tek onda rezultat!
-  }
-};
-
-
+    if (trenutno + 1 < pitanja.length) {
+      setOdgovori(noviOdgovori);
+      setTrenutno(trenutno + 1);
+    } else {
+      const tacni = noviOdgovori.filter((o) => o.izabrani === o.tacan).length;
+      setOdgovori(noviOdgovori);
+      setPregledOdgovori(noviOdgovori);
+      setRezultat(tacni);
+    }
+  };
 
   const handlePovratak = () => {
     navigate("/");
@@ -59,7 +59,8 @@ export default function Kviz() {
     setRezultat(null);
     setTrenutno(0);
     setOdgovori([]);
-    setPrikaziPregled(false); // ← OVO DODANO
+    setPregledOdgovori([]);
+    setPrikaziPregled(false);
     setKvizZapoceo(true);
 
     fetch("http://localhost:8000/kviz/pitanja")
@@ -73,24 +74,19 @@ export default function Kviz() {
       });
   };
 
-
   if (!kvizZapoceo) {
     return (
       <div className="kviz-wrapper">
         <div className="kviz-container">
           <h1 className="kviz-title">Dobrodošli u kviz!</h1>
           <div className="kviz-uvod">
-            <p>Testirajte svoje znanje! </p>
+            <p>Testirajte svoje znanje!</p>
             <p>Kviz se sastoji od 10 pitanja, a za svako pitanje ponuđena su tri odgovora.</p>
             <p>Samo jedan odgovor je tačan – odaberite pažljivo!</p>
             <p>Sretno!</p>
           </div>
 
-
-          <button
-            onClick={() => setKvizZapoceo(true)}
-            className="kviz-btn primary"
-          >
+          <button onClick={() => setKvizZapoceo(true)} className="kviz-btn primary">
             🚀 Započni kviz
           </button>
           <button onClick={handlePovratak} className="kviz-btn secondary">
@@ -117,22 +113,20 @@ export default function Kviz() {
               <button onClick={() => setPrikaziPregled(true)} className="kviz-btn primary">
                 📋 Pogledaj odgovore
               </button>
-             <button onClick={pokreniPonovo} className="kviz-btn primary">
+              <button onClick={pokreniPonovo} className="kviz-btn primary">
                 🔁 Pokreni novi kviz
               </button>
-
               <button onClick={handlePovratak} className="kviz-btn secondary">
                 ← Povratak na dashboard
               </button>
-
             </>
           ) : (
             <>
               <h2 className="kviz-title">Pregled odgovora</h2>
               <div className="kviz-pregled">
-                {odgovori.map((o, idx) => (
+                {pregledOdgovori.map((o, idx) => (
                   <div key={idx} className="kviz-pregled-item">
-                    <p style={{fontWeight: "bold"}}>{idx + 1}. {o.pitanje}</p>
+                    <p style={{ fontWeight: "bold" }}>{idx + 1}. {o.pitanje}</p>
                     <p>
                       Vaš odgovor:{" "}
                       <span style={{ backgroundColor: "inherit", color: o.izabrani === o.tacan ? "green" : "red" }}>
@@ -157,7 +151,6 @@ export default function Kviz() {
       </div>
     );
   }
-
 
   const pitanje = pitanja[trenutno];
 
