@@ -29,9 +29,7 @@ export default function UserDashboard() {
       const hostname = window.location.hostname;
       const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
 
-      const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {
-        credentials: "include",
-      });
+      const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {});
 
       if (!response.ok) {
         throw new Error("Simptom nije pronađen.");
@@ -40,7 +38,6 @@ export default function UserDashboard() {
       const data = await response.json();
       localStorage.setItem("povrede", JSON.stringify(data));
 
-      // Ako želiš odmah preusmjeriti na prikaz rezultata (ako postoji npr. /dashboard/results):
       window.location.href = "/dashboard";  // ili useNavigate ako koristiš
     } catch (err) {
       alert(err.message);

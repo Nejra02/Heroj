@@ -86,6 +86,7 @@ body {
   color: white;
 }
 
+
 .navbar-right .btn.login:hover {
   color: var(--red);
 }
