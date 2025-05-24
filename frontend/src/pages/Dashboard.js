@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [povrede, setPovrede] = useState([]);
-  const [, setPomoci] = useState([]);
+  const [pomoci, setPomoci] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,13 +19,43 @@ export default function Dashboard() {
     }
 
     const hostname = window.location.hostname;
-    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+    const apiBase =
+      hostname === "localhost"
+        ? "http://localhost:8000"
+        : `http://${hostname}:8000`;
 
     fetch(`${apiBase}/pomoc/random?count=5`)
       .then((res) => res.json())
       .then((data) => setPomoci(data))
       .catch((err) => console.error("Greška:", err));
   }, [navigate]);
+
+  const handleSymptomSearch = async () => {
+    console.log("Pretraga pokrenuta:", search);
+
+    try {
+      const hostname = window.location.hostname;
+      const apiBase =
+        hostname === "localhost"
+          ? "http://localhost:8000"
+          : `http://${hostname}:8000`;
+
+      const response = await fetch(
+        `${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`
+      );
+      if (!response.ok) {
+        throw new Error("Simptom nije pronađen.");
+      }
+
+      const data = await response.json();
+      console.log("Rezultat pretrage:", data);
+      localStorage.setItem("povrede", JSON.stringify(data));
+      navigate("/dashboard");
+      window.location.reload(); // ključno da se prikaz osvježi
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   return (
     <div className="landing-wrapper">
@@ -35,14 +66,23 @@ export default function Dashboard() {
             <img src="/logo.png" alt="Heroj Logo" />
             <span className="logo-text">Heroj</span>
           </div>
-          <div className="navbar-center">
+
+          <form
+            className="navbar-center"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSymptomSearch();
+            }}
+          >
             <input
               type="text"
               className="search-bar"
               placeholder="Pretraži simptome..."
-              disabled
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
-          </div>
+          </form>
+
           <div className="navbar-right">
             <button className="btn login" onClick={() => navigate("/")}>
               Nazad
@@ -51,9 +91,7 @@ export default function Dashboard() {
         </nav>
 
         {/* HITNA PORUKA */}
-        <div className="dashboard-title">
-          POZOVITE HITNU POMOĆ 124!
-        </div>
+        <div className="dashboard-title">POZOVITE HITNU POMOĆ 124!</div>
 
         {/* POVREDE */}
         {povrede.length > 0 ? (
@@ -69,7 +107,9 @@ export default function Dashboard() {
             </div>
           ))
         ) : (
-          <p style={{ textAlign: "center", color: "#888" }}>Nema povreda za prikaz.</p>
+          <p style={{ textAlign: "center", color: "#888" }}>
+            Nema povreda za prikaz.
+          </p>
         )}
       </div>
     </div>

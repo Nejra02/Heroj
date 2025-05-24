@@ -26,8 +26,11 @@ export default function Edukacija() {
 
   return (
     <div className="page">
-      <nav className="navbar">
-        <div className="logo">Budi nečiji heroj!</div>
+      <nav className="navbar-edukacija">
+        <div className="lijevo">
+            <img src="/logo.png" alt="Heroj Logo"/>
+            <span className="logo">Budi nečiji heroj !</span>
+          </div>
         <div className="nav-links">
           <Link to="/kviz">Kviz</Link>
           <a href="/forum">Forum</a>

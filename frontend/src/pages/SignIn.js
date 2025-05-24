@@ -61,7 +61,7 @@ const SignIn = () => {
         <div className="col-lg-6 d-flex align-items-center justify-content-center form-col">
           <div className="form-container p-4 p-md-5">
             <div className="text-center mb-5">
-              <h2 className="fw-bold">Prijavi se</h2>
+              <h2 className="fw-bold">Prijava</h2>
              <p className="text-muted">
               Još nisi registrovan? 
               <Link to="/signup" className="text-link">Registruj se.</Link>

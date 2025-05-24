@@ -24,7 +24,6 @@ function App() {
         <Route index element={<LandingPage />} />
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
-        {/* Add more routes as needed */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/povreda/:id" element={<PovredaDetails />} />
       </Routes>
