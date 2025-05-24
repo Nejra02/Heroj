@@ -14,3 +14,7 @@ def create_user(db: Session, user_data: dict):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def get_users_by_role(db: Session, role: str):
+    statement = select(User).where(User.role == role)
+    return db.exec(statement).all()

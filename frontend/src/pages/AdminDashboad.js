@@ -1,110 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "../styles/UserDashboard.css";
+import "../styles/AdminDashboard.css";
 
-export default function UserDashboard() {
-  const [username, setUsername] = useState("Korisnik");
-  const [search, setSearch] = useState("");
-  const [manualHistory, setManualHistory] = useState([]);
-  const [backendHistory, setBackendHistory] = useState({ povrede: [], simptomi: [] });
+export default function UserAdminPanel() {
+  const [showUsers, setShowUsers] = useState(false);
+  const [regularUsers, setRegularUsers] = useState([]);
 
-  useEffect(() => {
-    setUsername("Admin");
-
-    // Fetch backend history for user ID 4
-    fetch("http://localhost:8000/user/4/history")
-      .then((res) => res.json())
-      .then((data) => setBackendHistory(data))
-      .catch((err) => console.error("Greška prilikom dohvata historije:", err));
-  }, []);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (search.trim()) {
-      setManualHistory([search, ...manualHistory]);
-      setSearch("");
+  const toggleUsers = () => {
+    if (!showUsers) {
+      fetch("http://localhost:8000/users")
+        .then(res => res.json())
+        .then(data => setRegularUsers(data));
     }
+    setShowUsers(prev => !prev);
   };
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <div className="header-left">
-          <img src="/logo.png" alt="Logo" className="logo" />
-          <span className="username">{username}</span>
+    <div className="admin-panel-wrapper">
+      <header className="admin-header">
+        <div className="admin-header-left">
+          <img src="/logo.png" alt="Logo" className="admin-logo" />
+          <span className="admin-name">Admin</span>
         </div>
-        <form className="search-form" onSubmit={handleSearch}>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Pretraži simptome/povrede"
-          />
-          <button type="submit">Traži</button>
-        </form>
       </header>
 
-      <div className="dashboard-body">
-        <aside className="sidebar">
-          <div className="sidebar-section">
-            <Link to="/kviz">Kviz</Link>
-            <p className="sidebar-text">
-              Dodaj pitanje.
-            </p>
-            <p className="sidebar-text">
-              Izbriši pitanje.
-            </p>
-          </div>
-
-          <div className="sidebar-section">
-            <Link to="/edukacija">Edukacija</Link>
-            <p className="sidebar-text">
-              Dodaj osnovnu tehniku.
-            </p>
-            <p className="sidebar-text">
-              Dodaj pristup pomoći.
-            </p>
-            <p className="sidebar-text">
-              Dodaj video.
-            </p>
-          </div>
-
-          <div className="sidebar-section">
-            <button>Forum</button>
-            <p className="sidebar-text">
-              Budite u kontaktu sa ostalim korisnicima kroz objave i komentare na našem forumu.
-            </p>
+      <div className="admin-panel-body">
+        <aside className="admin-sidebar">
+          <div className="admin-sidebar-group">
+            <button onClick={toggleUsers}>
+              {showUsers ? "Sakrij korisnike" : "Prikaži korisnike"}
+            </button>
           </div>
         </aside>
 
-        <main className="content">
-          <h2>Historija pretrage</h2>
-
-          <h3>Povrede</h3>
-          <ul>
-            {backendHistory.povrede.length === 0 ? (
-              <li>Nema povreda u historiji.</li>
-            ) : (
-              backendHistory.povrede.map((p) => (
-                <li key={p.povreda_id}>
-                  <strong>{p.naziv}</strong>: {p.opis}
-                </li>
-              ))
-            )}
-          </ul>
-
-          <h3>Simptomi</h3>
-          <ul>
-            {backendHistory.simptomi.length === 0 ? (
-              <li>Nema simptoma u historiji.</li>
-            ) : (
-              backendHistory.simptomi.map((s) => (
-                <li key={s.simptom_id}>{s.naziv}</li>
-              ))
-            )}
-          </ul>
-
-         
+        <main className="admin-main-content">
+          {showUsers && (
+            <>
+              <h2 className="user-list-title">Registrovani korisnici</h2>
+              <div className="user-card-container">
+                {regularUsers.length === 0 ? (
+                  <p className="no-users-msg">Nema korisnika.</p>
+                ) : (
+                  regularUsers.map(user => (
+                    <div key={user.user_id} className="user-card">
+                      <p><strong>Korisničko ime:</strong> {user.username}</p>
+                      <p><strong>Email:</strong> {user.email}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
+          )}
         </main>
       </div>
     </div>

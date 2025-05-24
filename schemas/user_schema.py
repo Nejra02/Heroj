@@ -13,3 +13,11 @@ class Token(BaseModel):
     token_type: str
     role: str
 
+
+class UserOut(BaseModel):
+    user_id: int
+    username: str
+    email: str
+
+    class Config:
+        orm_mode = True
