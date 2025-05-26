@@ -1,8 +1,9 @@
 import bcrypt
 from sqlmodel import Session
-from sqlalchemy.orm import Session
+
 from database import SessionLocal
 from models.user_model import User
+
 from repositories import user_repositories
 from fastapi import HTTPException
 from services.auth_service import bcrypt_context

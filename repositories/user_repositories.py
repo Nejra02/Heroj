@@ -1,5 +1,6 @@
 from sqlmodel import Session, select
 from models.user_model import User
+from sqlalchemy import func
 
 def get_users(session:Session, offset: int = 0, limit: int = 100) -> list[User]:
   return session.exec(select(User).offset(offset).limit(limit)).all()
@@ -16,5 +17,5 @@ def create_user(db: Session, user_data: dict):
     return db_user
 
 def get_users_by_role(db: Session, role: str):
-    statement = select(User).where(User.role == role)
+    statement = select(User).where(func.lower(func.trim(User.role)) == role.strip().lower())
     return db.exec(statement).all()

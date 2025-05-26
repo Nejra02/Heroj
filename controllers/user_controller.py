@@ -17,10 +17,7 @@ SessionDep = Annotated[Session, Depends(get_session)]
 
 router = APIRouter()
 
-@router.get("/")
-def list_users(session: SessionDep, offset: int = 0, limit: int = 100):
-  return user_service.get_users(session, offset, limit)
 
-@router.get("/users", response_model=list[UserOut])
+@router.get("/", response_model=list[UserOut])
 def get_all_regular_users(db: SessionDep):
     return get_regular_users(db)
