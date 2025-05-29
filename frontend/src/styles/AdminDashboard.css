@@ -101,6 +101,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .user-card {
@@ -108,8 +109,20 @@ body {
   padding: 1rem;
   border-radius: 20px;
   border: 2px solid var(--dark-red);
+  margin: 0.5rem 0;
   color: var(--tekst);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-card button {
+  background-color: var(--red);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 
@@ -178,6 +191,7 @@ body {
   border: 2px solid var(--dark-red);
   border-radius: 15px;
   padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .question-item button {
@@ -193,4 +207,50 @@ body {
 
 .question-item button:hover {
   background-color: #a00000;
+}
+
+
+.custom-form {
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: var(--tekst);
+  border:  2px solid var(--dark-red);
+}
+
+.custom-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--navy);
+}
+
+.custom-form input,
+.custom-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--bijela);
+  color: var(--tekst);
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-form button {
+  background-color: var(--navy);
+  color: var(--bijela);
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-form button:hover {
+  background-color: var(--navy);
 }

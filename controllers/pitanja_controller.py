@@ -16,3 +16,10 @@ def get_kviz(db: Session = Depends(get_db)):
 def get_all(db: Session = Depends(get_db)):
     return pitanja_service.service_get_all(db)
 
+@router.post("/kviz/pitanja")
+def create_question(pitanje: PitanjeCreate, db: Session = Depends(get_db)):
+    return pitanja_service.create_question(pitanje, db)
+
+@router.delete("/kviz/pitanja/{pitanja_id}")
+def delete_question(pitanja_id: int, db: Session = Depends(get_db)):
+    return pitanja_service.delete_question(pitanja_id, db)
