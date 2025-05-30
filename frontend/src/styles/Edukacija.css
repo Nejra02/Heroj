@@ -228,6 +228,28 @@ body {
   line-height: 25px;
 }
 
+.slike-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 30px; 
+  margin-top: 20px;
+  justify-items: center;
+}
+
+.first-aid-image {
+  width: 100%;
+  height: auto;
+  max-width: 400px; /* Limit slike */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.first-aid-image:hover {
+  transform: scale(1.05); 
+}
+
+
 @media screen and (max-width: 768px) {
   .accordion-button {
     font-size: 22px;

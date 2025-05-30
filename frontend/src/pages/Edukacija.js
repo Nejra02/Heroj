@@ -8,6 +8,7 @@ import Kviz from "./Kviz.js";
 export default function Edukacija() {
   const [openOsnovne, setOpenOsnovne] = useState(false);
   const [openPovrede, setOpenPovrede] = useState(false);
+  const [openSlike, setOpenSlike] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
   const [osnovne, setOsnovne] = useState([]);
   const [povrede, setPovrede] = useState([]);
@@ -102,6 +103,22 @@ export default function Edukacija() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+
+      {/* SLIKE */}
+      <div className="osnovne-wrapper">
+        <button className="accordion-button" onClick={() => setOpenSlike(!openSlike)}>
+          {openSlike ? "−" : "+"} Slike
+        </button>
+
+        {openSlike && (
+          <div className="tehnike-content slike-container">
+            <img src="/slika1.png" alt="DRSABCD" className="first-aid-image" />
+            <img src="/slika2.jpg" alt="Seizure First Aid" className="first-aid-image" />
+            <img src="/slika3.webp" alt="Wounds First Aid" className="first-aid-image" />
+            <img src="/slika4.webp" alt="Wounds First Aid" className="first-aid-image" />
           </div>
         )}
       </div>
