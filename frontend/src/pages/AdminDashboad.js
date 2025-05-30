@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "../styles/AdminDashboard.css";
 
 export default function UserAdminPanel() {
@@ -13,42 +14,50 @@ export default function UserAdminPanel() {
   });
   const [activeSection, setActiveSection] = useState(null);
 
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [errorUsers, setErrorUsers] = useState(null);
+
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [errorQuestions, setErrorQuestions] = useState(null);
+
   const hostname = window.location.hostname;
   const apiBase =
     hostname === "localhost"
       ? "http://localhost:8000"
       : `http://${hostname}:8000`;
 
-  const handleSectionChange = (section) => {
+  const handleSectionChange = async (section) => {
     if (activeSection === section) {
       setActiveSection(null);
       return;
     }
 
     if (section === "users") {
-      fetch(`${apiBase}/users/`)
-        .then((res) => {
-          if (!res.ok) throw new Error(`Greška sa servera: ${res.status}`);
-          return res.json();
-        })
-        .then((data) => setRegularUsers(data))
-        .catch((err) => {
-          console.error(err);
-          alert("Ne mogu dohvatiti korisnike.");
-        });
+      setLoadingUsers(true);
+      setErrorUsers(null);
+      try {
+        const res = await axios.get(`${apiBase}/users/`);
+        setRegularUsers(res.data);
+      } catch (err) {
+        console.error(err);
+        setErrorUsers("Greška pri učitavanju korisnika.");
+      } finally {
+        setLoadingUsers(false);
+      }
     }
 
     if (section === "questions") {
-      fetch(`${apiBase}/kviz/pitanja`)
-        .then((res) => {
-          if (!res.ok) throw new Error(`Greška sa servera: ${res.status}`);
-          return res.json();
-        })
-        .then((data) => setQuestions(data))
-        .catch((err) => {
-          console.error(err);
-          alert("Ne mogu dohvatiti pitanja.");
-        });
+      setLoadingQuestions(true);
+      setErrorQuestions(null);
+      try {
+        const res = await axios.get(`${apiBase}/kviz/pitanja`);
+        setQuestions(res.data);
+      } catch (err) {
+        console.error(err);
+        setErrorQuestions("Greška pri učitavanju pitanja.");
+      } finally {
+        setLoadingQuestions(false);
+      }
     }
 
     setActiveSection(section);
@@ -58,20 +67,13 @@ export default function UserAdminPanel() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${apiBase}/kviz/pitanja`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newQ),
-      });
-
-      if (!res.ok) throw new Error("Greška pri dodavanju pitanja");
-
-      const added = await res.json();
-      setQuestions([...questions, added]);
+      const res = await axios.post(`${apiBase}/kviz/pitanja`, newQ);
+      setQuestions([...questions, res.data]);
       setNewQ({ pitanje: "", tacan: "", netacan1: "", netacan2: "" });
       alert("Pitanje je uspešno dodano.");
     } catch (err) {
-      alert(err.message);
+      console.error(err);
+      alert("Greška pri dodavanju pitanja.");
     }
   };
 
@@ -80,15 +82,11 @@ export default function UserAdminPanel() {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`${apiBase}/kviz/pitanja/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Greška pri brisanju pitanja");
-
+      await axios.delete(`${apiBase}/kviz/pitanja/${id}`);
       setQuestions(questions.filter((q) => q.pitanja_id !== id));
     } catch (err) {
-      alert(err.message);
+      console.error(err);
+      alert("Greška pri brisanju pitanja.");
     }
   };
 
@@ -97,16 +95,13 @@ export default function UserAdminPanel() {
     if (!search.trim()) return;
 
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`
       );
-      if (!response.ok) throw new Error("Simptom nije pronađen.");
-
-      const data = await response.json();
-      localStorage.setItem("povrede", JSON.stringify(data));
+      localStorage.setItem("povrede", JSON.stringify(response.data));
       window.location.href = "/dashboard";
     } catch (err) {
-      alert(err.message);
+      alert("Simptom nije pronađen.");
     }
   };
 
@@ -151,16 +146,24 @@ export default function UserAdminPanel() {
             <>
               <h2 className="user-list-title">Registrovani korisnici</h2>
               <div className="user-list">
-                {regularUsers.length === 0 ? (
+                {loadingUsers ? (
+                  <p>Učitavanje korisnika...</p>
+                ) : errorUsers ? (
+                  <p style={{ color: "red" }}>{errorUsers}</p>
+                ) : regularUsers.length === 0 ? (
                   <p className="no-users-msg">Nema korisnika.</p>
-                ) : regularUsers.map(user => (
+                ) : (
+                  regularUsers.map((user) => (
                     <div key={user.user_id} className="user-card">
-                      <p><strong>Korisničko ime:</strong> {user.username}</p>
-                      <p><strong>Email:</strong> {user.email}</p>
+                      <p>
+                        <strong>Korisničko ime:</strong> {user.username}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {user.email}
+                      </p>
                     </div>
                   ))
-
-                }
+                )}
               </div>
             </>
           )}
@@ -169,7 +172,11 @@ export default function UserAdminPanel() {
             <>
               <h2 className="user-list-title">Sva pitanja</h2>
               <div className="question-card-container">
-                {questions.length === 0 ? (
+                {loadingQuestions ? (
+                  <p>Učitavanje pitanja...</p>
+                ) : errorQuestions ? (
+                  <p style={{ color: "red" }}>{errorQuestions}</p>
+                ) : questions.length === 0 ? (
                   <p className="no-users-msg">Nema dostupnih pitanja.</p>
                 ) : (
                   questions.map((q) => (
@@ -186,7 +193,7 @@ export default function UserAdminPanel() {
                       <p>
                         <strong>Netačan 2:</strong> {q.netacan2}
                       </p>
-                      <button onClick={() => handleDeleteQuestion(q.pitanja_id)} >
+                      <button onClick={() => handleDeleteQuestion(q.pitanja_id)}>
                         Obriši
                       </button>
                     </div>
