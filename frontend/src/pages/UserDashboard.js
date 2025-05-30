@@ -5,12 +5,11 @@ import "../styles/UserDashboard.css";
 export default function UserDashboard() {
   const [username, setUsername] = useState("Korisnik");
   const [search, setSearch] = useState("");
-  const [backendHistory, setBackendHistory] = useState({ povrede: [], simptomi: [] });
+  const [backendHistory, setBackendHistory] = useState({simptomi: [] });
 
   useEffect(() => {
-    // Fetch dashboard data (povrede + simptomi)
-    fetch("http://localhost:8000/user/dashboard-data", {
-      credentials: "include", // -> šalje cookie (token)
+    fetch("http://localhost:8000/users/dashboard-data", {
+      credentials: "include",
     })
       .then((res) => {
         if (!res.ok) {
@@ -19,11 +18,10 @@ export default function UserDashboard() {
         return res.json();
       })
       .then((data) => {
-        setBackendHistory({ povrede: data.povrede, simptomi: data.simptomi });
+        setBackendHistory({ simptomi: data.simptomi });  // Samo simptomi
       })
       .catch((err) => console.error("Greška prilikom dohvata historije:", err));
-
-    // Fetch username separately
+    
     fetch("http://localhost:8000/users/me", {
       credentials: "include",
     })
@@ -38,6 +36,7 @@ export default function UserDashboard() {
       })
       .catch((err) => console.error("Greška prilikom dohvata korisnika:", err));
   }, []);
+
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -59,7 +58,7 @@ export default function UserDashboard() {
       const data = await response.json();
       localStorage.setItem("povrede", JSON.stringify(data));
 
-      // Kad pretražiš simptom — možeš odmah redirect ako želiš
+      localStorage.setItem("search-origin", "user_dashboard");
       window.location.href = "/dashboard"; 
     } catch (err) {
       alert(err.message);
@@ -109,21 +108,6 @@ export default function UserDashboard() {
 
         <main className="content">
           <h2>Historija pretrage</h2>
-
-          <div className="lista">
-            <h3>Povrede</h3>
-            <ul>
-              {backendHistory.povrede.length === 0 ? (
-                <li>Nema povreda u historiji.</li>
-              ) : (
-                backendHistory.povrede.map((p) => (
-                  <li key={p.povreda_id}>
-                    <strong>{p.naziv}</strong>: {p.opis}
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
 
           <div className="lista">
             <h3>Simptomi</h3>

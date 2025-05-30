@@ -107,8 +107,12 @@ export default function UserAdminPanel() {
     if (!search.trim()) return;
 
     try {
-      const res = await axios.get(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`);
+      const res = await axios.get(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {
+        withCredentials: true,   
+      });
+
       localStorage.setItem("povrede", JSON.stringify(res.data));
+      localStorage.setItem("search-origin", "admin_dashboard");
       window.location.href = "/dashboard";
     } catch (err) {
       alert(err.message);

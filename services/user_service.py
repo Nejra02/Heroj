@@ -19,7 +19,6 @@ def create_user_service(db: Session, user_data: dict):
     return user_repositories.create_user(db, user_data)
 
 def is_password_hashed(password):
-    # Pretpostavka: bcrypt hash počinje sa $2b$ i ima oko 60 karaktera
     return password.startswith('$2b$') and len(password) >= 60
 
 def get_regular_users(db: Session):
@@ -27,7 +26,6 @@ def get_regular_users(db: Session):
 
 
 def get_user_dashboard_data(user_id: int, db: Session):
-    # Simptomi koje je user pretraživao
     user_simptoms = (
         db.query(Simptom.simptom_id, Simptom.naziv)
         .join(User_simptom, User_simptom.simptom_id == Simptom.simptom_id)

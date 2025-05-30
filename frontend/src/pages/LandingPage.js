@@ -27,13 +27,20 @@ function LandingPage() {
     const hostname = window.location.hostname;
     const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
 
-    const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`);
+    const response = await fetch(
+  `${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`,
+  {
+    method: "GET",
+    credentials: "include"  
+  }
+);
     if (!response.ok) {
       throw new Error("Simptom nije pronađen.");
     }
 
     const data = await response.json();
     localStorage.setItem("povrede", JSON.stringify(data));
+    localStorage.setItem("search-origin", "landing_page");
     navigate("/dashboard");
   } catch (err) {
     alert(err.message);

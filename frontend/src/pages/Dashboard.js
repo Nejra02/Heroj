@@ -10,25 +10,31 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const saved = localStorage.getItem("povrede");
-    if (saved) {
-      setPovrede(JSON.parse(saved));
-    } else {
-      navigate("/");
-    }
+  const [origin, setOrigin] = useState("/");
 
-    const hostname = window.location.hostname;
-    const apiBase =
-      hostname === "localhost"
-        ? "http://localhost:8000"
-        : `http://${hostname}:8000`;
+useEffect(() => {
+  const saved = localStorage.getItem("povrede");
+  const searchOrigin = localStorage.getItem("search-origin") || "/";
+  
+  if (saved) {
+    setPovrede(JSON.parse(saved));
+    setOrigin(searchOrigin);
+  } else {
+    navigate("/");
+  }
 
-    fetch(`${apiBase}/pomoc/random?count=5`)
-      .then((res) => res.json())
-      .then((data) => setPomoci(data))
-      .catch((err) => console.error("Greška:", err));
-  }, [navigate]);
+  const hostname = window.location.hostname;
+  const apiBase =
+    hostname === "localhost"
+      ? "http://localhost:8000"
+      : `http://${hostname}:8000`;
+
+  fetch(`${apiBase}/pomoc/random?count=5`)
+    .then((res) => res.json())
+    .then((data) => setPomoci(data))
+    .catch((err) => console.error("Greška:", err));
+}, [navigate]);
+
 
   const handleSymptomSearch = async () => {
     console.log("Pretraga pokrenuta:", search);
@@ -84,9 +90,18 @@ export default function Dashboard() {
           </form>
 
           <div className="navbar-right">
-            <button className="btn login" onClick={() => navigate("/")}>
+            <button className="btn login" onClick={() => {
+              if (origin === "user_dashboard") {
+                navigate("/user_dashboard");
+              } else if (origin === "admin_dashboard") {
+                navigate("/admin_dashboard");
+              } else {
+                navigate("/");  // landing page fallback
+              }
+            }}>
               Nazad
             </button>
+
           </div>
         </nav>
 
