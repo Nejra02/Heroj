@@ -11,3 +11,13 @@ def get_edukacija_sadrzaj(db: Session):
         "pristup_povredi": povrede,
         "videi": videi
     }
+
+
+def create_osnovna_tehnika(db, tehnika):
+    return edukacija_repositories.create_osnovna_tehnika(db, tehnika)
+
+def create_pristup_povredi(db, povreda):
+    return edukacija_repositories.create_pristup_povredi(db, povreda)
+
+def create_video(db, video):
+    return edukacija_repositories.create_video(db, video)

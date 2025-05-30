@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../styles/AdminDashboard.css";
 
 export default function UserAdminPanel() {
@@ -12,6 +13,18 @@ export default function UserAdminPanel() {
     netacan2: "",
   });
   const [activeSection, setActiveSection] = useState(null);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [errorUsers, setErrorUsers] = useState(null);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [errorQuestions, setErrorQuestions] = useState(null);
+  const [osnovne, setOsnovne] = useState([]);
+  const [povrede, setPovrede] = useState([]);
+  const [videoList, setVideoList] = useState([]);
+  const [novaTehnikaNaziv, setNovaTehnikaNaziv] = useState("");
+  const [novaTehnikaOpis, setNovaTehnikaOpis] = useState("");
+  const [novaPovredaNaziv, setNovaPovredaNaziv] = useState("");
+  const [novaPovredaOpis, setNovaPovredaOpis] = useState("");
+  const [noviVideoLink, setNoviVideoLink] = useState("");
 
   const hostname = window.location.hostname;
   const apiBase =
@@ -22,52 +35,54 @@ export default function UserAdminPanel() {
   const handleSectionChange = (section) => {
     if (activeSection === section) {
       setActiveSection(null);
-      return;
+    } else {
+      setActiveSection(section);
     }
-
-    if (section === "users") {
-      fetch(`${apiBase}/users/`)
-        .then((res) => {
-          if (!res.ok) throw new Error(`Greška sa servera: ${res.status}`);
-          return res.json();
-        })
-        .then((data) => setRegularUsers(data))
-        .catch((err) => {
-          console.error(err);
-          alert("Ne mogu dohvatiti korisnike.");
-        });
-    }
-
-    if (section === "questions") {
-      fetch(`${apiBase}/kviz/pitanja`)
-        .then((res) => {
-          if (!res.ok) throw new Error(`Greška sa servera: ${res.status}`);
-          return res.json();
-        })
-        .then((data) => setQuestions(data))
-        .catch((err) => {
-          console.error(err);
-          alert("Ne mogu dohvatiti pitanja.");
-        });
-    }
-
-    setActiveSection(section);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (activeSection === "users") {
+        setLoadingUsers(true);
+        setErrorUsers(null);
+        try {
+          const res = await axios.get(`${apiBase}/users/`);
+          setRegularUsers(res.data);
+        } catch (err) {
+          console.error(err);
+          setErrorUsers("Greška pri učitavanju korisnika.");
+        } finally {
+          setLoadingUsers(false);
+        }
+      }
+
+      if (activeSection === "questions") {
+        setLoadingQuestions(true);
+        setErrorQuestions(null);
+        try {
+          const res = await axios.get(`${apiBase}/kviz/pitanja`);
+          setQuestions(res.data);
+        } catch (err) {
+          console.error(err);
+          setErrorQuestions("Greška pri učitavanju pitanja.");
+        } finally {
+          setLoadingQuestions(false);
+        }
+      }
+    };
+
+    if (activeSection) {
+      fetchData();
+    }
+  }, [activeSection]);
 
   const handleAddQuestion = async (e) => {
     e.preventDefault();
-
     try {
-      const res = await fetch(`${apiBase}/kviz/pitanja`, {
-        method: "POST",
+      const res = await axios.post(`${apiBase}/kviz/pitanja`, newQ, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newQ),
       });
-
-      if (!res.ok) throw new Error("Greška pri dodavanju pitanja");
-
-      const added = await res.json();
-      setQuestions([...questions, added]);
+      setQuestions([...questions, res.data]);
       setNewQ({ pitanje: "", tacan: "", netacan1: "", netacan2: "" });
       alert("Pitanje je uspešno dodano.");
     } catch (err) {
@@ -76,16 +91,11 @@ export default function UserAdminPanel() {
   };
 
   const handleDeleteQuestion = async (id) => {
-    const confirm = window.confirm("Da li sigurno želiš obrisati ovo pitanje?");
-    if (!confirm) return;
+    const confirmDelete = window.confirm("Da li sigurno želiš obrisati ovo pitanje?");
+    if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`${apiBase}/kviz/pitanja/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Greška pri brisanju pitanja");
-
+      await axios.delete(`${apiBase}/kviz/pitanja/${id}`);
       setQuestions(questions.filter((q) => q.pitanja_id !== id));
     } catch (err) {
       alert(err.message);
@@ -97,14 +107,58 @@ export default function UserAdminPanel() {
     if (!search.trim()) return;
 
     try {
-      const response = await fetch(
-        `${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`
-      );
-      if (!response.ok) throw new Error("Simptom nije pronađen.");
-
-      const data = await response.json();
-      localStorage.setItem("povrede", JSON.stringify(data));
+      const res = await axios.get(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`);
+      localStorage.setItem("povrede", JSON.stringify(res.data));
       window.location.href = "/dashboard";
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleAddOsnovnaTehnika = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${apiBase}/edukacija/osnovne-tehnike`, {
+        naziv: novaTehnikaNaziv,
+        opis: novaTehnikaOpis,
+      }, {
+        headers: { "Content-Type": "application/json" },
+      });
+      setOsnovne([...osnovne, res.data]);
+      setNovaTehnikaNaziv("");
+      setNovaTehnikaOpis("");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleAddPovreda = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${apiBase}/edukacija/pristup-povredi`, {
+        naziv: novaPovredaNaziv,
+        opis: novaPovredaOpis,
+      }, {
+        headers: { "Content-Type": "application/json" },
+      });
+      setPovrede([...povrede, res.data]);
+      setNovaPovredaNaziv("");
+      setNovaPovredaOpis("");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleAddVideo = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${apiBase}/edukacija/video`, {
+        link: noviVideoLink,
+      }, {
+        headers: { "Content-Type": "application/json" },
+      });
+      setVideoList([...videoList, res.data]);
+      setNoviVideoLink("");
     } catch (err) {
       alert(err.message);
     }
@@ -136,31 +190,51 @@ export default function UserAdminPanel() {
           </div>
           <div className="admin-sidebar-group">
             <button onClick={() => handleSectionChange("questions")}>
-              {activeSection === "questions" ? "Sakrij pitanja" : "Prikaži kviz pitanja"}
+              {activeSection === "questions" ? "Sakrij pitanja" : "Prikaži pitanja"}
             </button>
           </div>
           <div className="admin-sidebar-group">
             <button onClick={() => handleSectionChange("add")}>
-              {activeSection === "add" ? "Sakrij formu" : "Dodaj novo pitanje"}
+              {activeSection === "add" ? "Sakrij formu za pitanje" : "Dodaj pitanje"}
+            </button>
+          </div>
+          <div className="admin-sidebar-group">
+            <button onClick={() => handleSectionChange("add-technique")}>
+              {activeSection === "add-technique" ? "Sakrij formu za osnovnu tehniku" : "Dodaj osnovnu tehniku"}
+            </button>
+          </div>
+          <div className="admin-sidebar-group">
+            <button onClick={() => handleSectionChange("add-injury")}>
+              {activeSection === "add-injury" ? "Sakrij formu za pristupanje povredi" : "Dodaj pristupanje povredi"}
+            </button>
+          </div>
+          <div className="admin-sidebar-group">
+            <button onClick={() => handleSectionChange("add-video")}>
+              {activeSection === "add-video" ? "Sakrij formu za video" : "Dodaj video"}
             </button>
           </div>
         </aside>
+
 
         <main className="admin-main-content">
           {activeSection === "users" && (
             <>
               <h2 className="user-list-title">Registrovani korisnici</h2>
               <div className="user-list">
-                {regularUsers.length === 0 ? (
+                {loadingUsers ? (
+                  <p>Učitavanje korisnika...</p>
+                ) : errorUsers ? (
+                  <p style={{ color: "red" }}>{errorUsers}</p>
+                ) : regularUsers.length === 0 ? (
                   <p className="no-users-msg">Nema korisnika.</p>
-                ) : regularUsers.map(user => (
+                ) : (
+                  regularUsers.map((user) => (
                     <div key={user.user_id} className="user-card">
                       <p><strong>Korisničko ime:</strong> {user.username}</p>
                       <p><strong>Email:</strong> {user.email}</p>
                     </div>
                   ))
-
-                }
+                )}
               </div>
             </>
           )}
@@ -169,26 +243,20 @@ export default function UserAdminPanel() {
             <>
               <h2 className="user-list-title">Sva pitanja</h2>
               <div className="question-card-container">
-                {questions.length === 0 ? (
+                {loadingQuestions ? (
+                  <p>Učitavanje pitanja...</p>
+                ) : errorQuestions ? (
+                  <p style={{ color: "red" }}>{errorQuestions}</p>
+                ) : questions.length === 0 ? (
                   <p className="no-users-msg">Nema dostupnih pitanja.</p>
                 ) : (
                   questions.map((q) => (
                     <div key={q.pitanja_id} className="user-card">
-                      <p>
-                        <strong>Pitanje:</strong> {q.pitanje}
-                      </p>
-                      <p>
-                        <strong>Tačan:</strong> {q.tacan}
-                      </p>
-                      <p>
-                        <strong>Netačan 1:</strong> {q.netacan1}
-                      </p>
-                      <p>
-                        <strong>Netačan 2:</strong> {q.netacan2}
-                      </p>
-                      <button onClick={() => handleDeleteQuestion(q.pitanja_id)} >
-                        Obriši
-                      </button>
+                      <p><strong>Pitanje:</strong> {q.pitanje}</p>
+                      <p><strong>Tačan:</strong> {q.tacan}</p>
+                      <p><strong>Netačan 1:</strong> {q.netacan1}</p>
+                      <p><strong>Netačan 2:</strong> {q.netacan2}</p>
+                      <button onClick={() => handleDeleteQuestion(q.pitanja_id)}>Obriši</button>
                     </div>
                   ))
                 )}
@@ -231,6 +299,60 @@ export default function UserAdminPanel() {
                 <button type="submit">Dodaj pitanje</button>
               </form>
             </div>
+          )}
+
+          {activeSection === "add-technique" && (
+            <form onSubmit={handleAddOsnovnaTehnika} className="custom-form">
+              <h2>Dodaj osnovnu tehniku</h2>
+              <input
+                type="text"
+                placeholder="Naziv tehnike"
+                value={novaTehnikaNaziv}
+                onChange={(e) => setNovaTehnikaNaziv(e.target.value)}
+                required
+              />
+              <textarea
+                placeholder="Opis tehnike"
+                value={novaTehnikaOpis}
+                onChange={(e) => setNovaTehnikaOpis(e.target.value)}
+                required
+              ></textarea>
+              <button type="submit">Dodaj tehniku</button>
+            </form>
+          )}
+
+          {activeSection === "add-injury" && (
+            <form onSubmit={handleAddPovreda} className="custom-form">
+              <h2>Dodaj postupanje kod povreda</h2>
+              <input
+                type="text"
+                placeholder="Naziv povrede"
+                value={novaPovredaNaziv}
+                onChange={(e) => setNovaPovredaNaziv(e.target.value)}
+                required
+              />
+              <textarea
+                placeholder="Opis povrede"
+                value={novaPovredaOpis}
+                onChange={(e) => setNovaPovredaOpis(e.target.value)}
+                required
+              ></textarea>
+              <button type="submit">Dodaj povredu</button>
+            </form>
+          )}
+
+          {activeSection === "add-video" && (
+            <form onSubmit={handleAddVideo} className="custom-form">
+              <h2>Dodaj video</h2>
+              <input
+                type="text"
+                placeholder="YouTube Link"
+                value={noviVideoLink}
+                onChange={(e) => setNoviVideoLink(e.target.value)}
+                required
+              />
+              <button type="submit">Dodaj video</button>
+            </form>
           )}
         </main>
       </div>

@@ -60,6 +60,8 @@ body {
 
 .admin-sidebar {
   width: 220px;
+  min-width: 220px; /* Dodaj ovo */
+  flex-shrink: 0;   /* Dodaj ovo */
   background-color: var(--bijela);
   padding: 1.5rem;
   border-radius: 20px;

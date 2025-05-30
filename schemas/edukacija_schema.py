@@ -27,3 +27,14 @@ class EdukacijaResponse(BaseModel):
     osnovne_tehnike: list[OsnovnaTehnikaRead]
     pristup_povredi: list[PristupPovrediRead]
     videi: list[VideoRead]
+
+class OsnovnaTehnikaCreate(BaseModel):
+    naziv: str
+    opis: str
+
+class PristupPovrediCreate(BaseModel):
+    naziv: str
+    opis: str
+
+class VideoCreate(BaseModel):
+    link: str
