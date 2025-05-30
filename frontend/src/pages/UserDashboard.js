@@ -5,20 +5,38 @@ import "../styles/UserDashboard.css";
 export default function UserDashboard() {
   const [username, setUsername] = useState("Korisnik");
   const [search, setSearch] = useState("");
-  const [manualHistory, setManualHistory] = useState([]);
   const [backendHistory, setBackendHistory] = useState({ povrede: [], simptomi: [] });
 
   useEffect(() => {
-    setUsername("Nejra");
+    // Fetch dashboard data (povrede + simptomi)
+    fetch("http://localhost:8000/user/dashboard-data", {
+      credentials: "include", // -> šalje cookie (token)
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Neuspješno učitavanje podataka.");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setBackendHistory({ povrede: data.povrede, simptomi: data.simptomi });
+      })
+      .catch((err) => console.error("Greška prilikom dohvata historije:", err));
 
-    // Fetch backend history for user ID 4
-    fetch("http://localhost:8000/user/4/history", {
+    // Fetch username separately
+    fetch("http://localhost:8000/users/me", {
       credentials: "include",
     })
-
-      .then((res) => res.json())
-      .then((data) => setBackendHistory(data))
-      .catch((err) => console.error("Greška prilikom dohvata historije:", err));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Neuspješno učitavanje korisnika.");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setUsername(data.username);
+      })
+      .catch((err) => console.error("Greška prilikom dohvata korisnika:", err));
   }, []);
 
   const handleSearch = async (e) => {
@@ -29,7 +47,10 @@ export default function UserDashboard() {
       const hostname = window.location.hostname;
       const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
 
-      const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {});
+      const response = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {
+        method: "GET",
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error("Simptom nije pronađen.");
@@ -38,19 +59,19 @@ export default function UserDashboard() {
       const data = await response.json();
       localStorage.setItem("povrede", JSON.stringify(data));
 
-      window.location.href = "/dashboard";  // ili useNavigate ako koristiš
+      // Kad pretražiš simptom — možeš odmah redirect ako želiš
+      window.location.href = "/dashboard"; 
     } catch (err) {
       alert(err.message);
     }
   };
 
-
   return (
     <div className="dashboard-page">
       <header className="dashboard-header">
         <div className="header-left">
-          <img src="/logo.png" alt="Logo"/>
-          <span className="username">Dobrodošli nazad {username} !</span>
+          <img src="/logo.png" alt="Logo" />
+          <span className="username">Dobrodošli nazad {username}!</span>
         </div>
         <form className="search-form" onSubmit={handleSearch}>
           <input
@@ -79,7 +100,7 @@ export default function UserDashboard() {
           </div>
 
           <div className="sidebar-section">
-            <Link to="/edukacija">Forum</Link>
+            <Link to="/forum">Forum</Link>
             <p className="sidebar-text">
               budite u kontaktu sa ostalim korisnicima kroz objave i komentare
             </p>
@@ -88,34 +109,34 @@ export default function UserDashboard() {
 
         <main className="content">
           <h2>Historija pretrage</h2>
-        <div className="lista">
-          <h3>Povrede</h3>
-          <ul>
-            {backendHistory.povrede.length === 0 ? (
-              <li>Nema povreda u historiji.</li>
-            ) : (
-              backendHistory.povrede.map((p) => (
-                <li key={p.povreda_id}>
-                  <strong>{p.naziv}</strong>: {p.opis}
-                </li>
-              ))
-            )}
-          </ul>
-          </div>
+
           <div className="lista">
-          <h3>Simptomi</h3>
-          <ul>
-            {backendHistory.simptomi.length === 0 ? (
-              <li>Nema simptoma u historiji.</li>
-            ) : (
-              backendHistory.simptomi.map((s) => (
-                <li key={s.simptom_id}>{s.naziv}</li>
-              ))
-            )}
-          </ul>
+            <h3>Povrede</h3>
+            <ul>
+              {backendHistory.povrede.length === 0 ? (
+                <li>Nema povreda u historiji.</li>
+              ) : (
+                backendHistory.povrede.map((p) => (
+                  <li key={p.povreda_id}>
+                    <strong>{p.naziv}</strong>: {p.opis}
+                  </li>
+                ))
+              )}
+            </ul>
           </div>
 
-         
+          <div className="lista">
+            <h3>Simptomi</h3>
+            <ul>
+              {backendHistory.simptomi.length === 0 ? (
+                <li>Nema simptoma u historiji.</li>
+              ) : (
+                backendHistory.simptomi.map((s) => (
+                  <li key={s.simptom_id}>{s.naziv}</li>
+                ))
+              )}
+            </ul>
+          </div>
         </main>
       </div>
     </div>

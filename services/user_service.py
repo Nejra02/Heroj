@@ -1,8 +1,10 @@
 import bcrypt
 from sqlmodel import Session
-
+from sqlalchemy.orm import Session
 from database import SessionLocal
 from models.user_model import User
+from models.user_simptom_model import User_simptom
+from models.simptom_model import Simptom
 
 from repositories import user_repositories
 from fastapi import HTTPException
@@ -22,3 +24,16 @@ def is_password_hashed(password):
 
 def get_regular_users(db: Session):
     return get_users_by_role(db, role="user")
+
+
+def get_user_dashboard_data(user_id: int, db: Session):
+    # Simptomi koje je user pretraživao
+    user_simptoms = (
+        db.query(Simptom.simptom_id, Simptom.naziv)
+        .join(User_simptom, User_simptom.simptom_id == Simptom.simptom_id)
+        .filter(User_simptom.user_id == user_id)
+        .all()
+    )
+    return {
+        "simptomi": [ {"simptom_id": s.simptom_id, "naziv": s.naziv} for s in user_simptoms ]    
+    }
