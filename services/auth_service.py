@@ -53,3 +53,17 @@ def get_current_user(request: Request, db: Session = Depends(get_db)):
     if user is None:
         raise credentials_exception
     return user
+
+from fastapi import Request
+
+from fastapi import Request
+from jose import JWTError
+
+def get_current_user_optional(request: Request, db: Session = Depends(get_db)):
+    try:
+        return get_current_user(request, db)
+    except JWTError:
+        return None
+    except Exception:
+        return None
+
