@@ -51,6 +51,24 @@ body {
   background-color: var(--rozasaslike);
 }
 
+.logout-button {
+  background-color: #e53935; /* crvena boja */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 20px; /* razmak od search forme */
+}
+
+.logout-button:hover {
+  background-color: #c62828; /* tamnija crvena kad hover */
+}
+
+
 
 .admin-panel-body {
   display: flex;
@@ -256,3 +274,4 @@ body {
 .custom-form button:hover {
   background-color: var(--navy);
 }
+

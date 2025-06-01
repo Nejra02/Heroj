@@ -55,8 +55,6 @@ def get_current_user(request: Request, db: Session = Depends(get_db)):
     return user
 
 from fastapi import Request
-
-from fastapi import Request
 from jose import JWTError
 
 def get_current_user_optional(request: Request, db: Session = Depends(get_db)):

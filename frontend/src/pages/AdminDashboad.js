@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/AdminDashboard.css";
 
 export default function UserAdminPanel() {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const [regularUsers, setRegularUsers] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [newQ, setNewQ] = useState({
@@ -12,7 +15,7 @@ export default function UserAdminPanel() {
     netacan1: "",
     netacan2: "",
   });
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState("users");
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [errorUsers, setErrorUsers] = useState(null);
   const [loadingQuestions, setLoadingQuestions] = useState(false);
@@ -25,12 +28,45 @@ export default function UserAdminPanel() {
   const [novaPovredaNaziv, setNovaPovredaNaziv] = useState("");
   const [novaPovredaOpis, setNovaPovredaOpis] = useState("");
   const [noviVideoLink, setNoviVideoLink] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(null);
+
 
   const hostname = window.location.hostname;
   const apiBase =
     hostname === "localhost"
       ? "http://localhost:8000"
       : `http://${hostname}:8000`;
+  useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch(`${apiBase}/users/me`, {
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          throw new Error("Not authenticated");
+        }
+
+        const data = await res.json();
+
+        if (data.role === "admin") {
+          setIsAuthorized(true); 
+        }
+        
+        else if (data.role === "user"){
+          navigate("/user_dashboard");
+        }
+        else {
+          navigate("/");
+        }
+      } catch (err) {
+        console.error("Error verifying user:", err);
+        navigate("/");  
+      }
+    };
+
+    checkRole();
+  }, [navigate, apiBase]);
 
   const handleSectionChange = (section) => {
     if (activeSection === section) {
@@ -168,6 +204,34 @@ export default function UserAdminPanel() {
     }
   };
 
+  const handleLogout = async () => {
+    const hostname = window.location.hostname;
+    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+    try {
+      const res = await fetch(`${apiBase}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();  // čitamo šta kaže server
+
+      if (res.ok) {
+        console.log(data); // <-- ispiši response
+        localStorage.clear();
+        window.location.href = "/signin";
+      } else {
+        console.error("Logout nije uspio:", data); // <-- vidi šta ti server kaže
+        alert("Logout nije uspio.");
+      }
+    } catch (err) {
+      console.error("Greška pri logoutu:", err);
+      alert("Došlo je do greške.");
+    }
+  };
+
+
+
   return (
     <div className="admin-panel-wrapper">
       <header className="dashboard-header">
@@ -183,6 +247,12 @@ export default function UserAdminPanel() {
             placeholder="Pretraži simptome..."
           />
         </form>
+        <div className="nav-links">
+          <Link to="/kviz">Kviz</Link>
+          <Link to="/edukacija">Edukacija</Link>
+          <a href="/forum">Forum</a>
+        </div>
+        <button className="logout-button" onClick={handleLogout}>Odjavi se</button>
       </header>
 
       <div className="admin-panel-body">

@@ -15,6 +15,7 @@ export default function Kviz() {
   const [rezultat, setRezultat] = useState(null);
   const [prikaziPregled, setPrikaziPregled] = useState(false);
   const [kvizZapoceo, setKvizZapoceo] = useState(false);
+  const [userRole, setUserRole] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,8 +53,52 @@ export default function Kviz() {
   };
 
   const handlePovratak = () => {
-    navigate("/");
+    if (userRole === "admin") {
+      navigate("/admin_dashboard");
+    } else if (userRole === "user") {
+      navigate("/user_dashboard");
+    } else {
+      navigate("/signin");
+    }
   };
+
+
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+    fetch(`${apiBase}/users/me`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Unauthorized");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.role !== "user" && data.role !== "admin") {
+          throw new Error("Unauthorized role");
+        }
+        setUserRole(data.role);
+
+        fetch(`${apiBase}/kviz/pitanja`)
+          .then((res) => res.json())
+          .then((data) => {
+            const pripremljena = data.map((p) => ({
+              ...p,
+              odgovori: shuffleArray([p.tacan, p.netacan1, p.netacan2]),
+            }));
+            setPitanja(pripremljena);
+          });
+      })
+      .catch((error) => {
+        console.error("Unauthorized access or error:", error);
+        navigate("/signin");
+      });
+  }, [navigate]);
+
+
 
   const pokreniPonovo = () => {
     setRezultat(null);
@@ -140,7 +185,7 @@ export default function Kviz() {
                 ))}
               </div>
               <button onClick={pokreniPonovo} className="kviz-btn primary">
-                🔁 Pokreni ponovo
+                🔁 Pokreni novi kviz
               </button>
               <button onClick={handlePovratak} className="kviz-btn secondary">
                 ← Nazad
@@ -150,6 +195,8 @@ export default function Kviz() {
         </div>
       </div>
     );
+
+
   }
 
   const pitanje = pitanja[trenutno];

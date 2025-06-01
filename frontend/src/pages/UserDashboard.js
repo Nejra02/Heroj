@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/UserDashboard.css";
 
 export default function UserDashboard() {
   const [username, setUsername] = useState("Korisnik");
   const [search, setSearch] = useState("");
   const [backendHistory, setBackendHistory] = useState({simptomi: [] });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/users/dashboard-data", {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Neuspješno učitavanje podataka.");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setBackendHistory({ simptomi: data.simptomi });  // Samo simptomi
-      })
-      .catch((err) => console.error("Greška prilikom dohvata historije:", err));
-    
-    fetch("http://localhost:8000/users/me", {
+    const hostname = window.location.hostname;
+    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+    // Provjera ulogovanog korisnika
+    fetch(`${apiBase}/users/me`, {
       credentials: "include",
     })
       .then((res) => {
@@ -32,10 +24,34 @@ export default function UserDashboard() {
         return res.json();
       })
       .then((data) => {
-        setUsername(data.username);
+        if (data.role === "user") {
+          setUsername(data.username);
+        } else if (data.role === "admin") {
+          navigate("/admin_dashboard");
+        } else {
+          navigate("/");
+        }
       })
-      .catch((err) => console.error("Greška prilikom dohvata korisnika:", err));
+      .catch((err) => {
+        console.error("Greška prilikom dohvata korisnika:", err);
+        navigate("/");
+      });
+
+    fetch(`${apiBase}/users/dashboard-data`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Neuspješno učitavanje podataka.");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setBackendHistory({ simptomi: data.simptomi });  
+      })
+      .catch((err) => console.error("Greška prilikom dohvata historije:", err));
   }, []);
+
 
 
   const handleSearch = async (e) => {
@@ -65,6 +81,32 @@ export default function UserDashboard() {
     }
   };
 
+  const handleLogout = async () => {
+    const hostname = window.location.hostname;
+    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+    try {
+      const res = await fetch(`${apiBase}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();  
+
+      if (res.ok) {
+        console.log(data);
+        localStorage.clear();
+        window.location.href = "/signin";
+      } else {
+        console.error("Logout nije uspio:", data); // <-- vidi šta ti server kaže
+        alert("Logout nije uspio.");
+      }
+    } catch (err) {
+      console.error("Greška pri logoutu:", err);
+      alert("Došlo je do greške.");
+    }
+  };
+
   return (
     <div className="dashboard-page">
       <header className="dashboard-header">
@@ -80,6 +122,7 @@ export default function UserDashboard() {
             placeholder="Pretraži simptome..."
           />
         </form>
+        <button className="logout-button" onClick={handleLogout}>Odjavi se</button>
       </header>
 
       <div className="dashboard-body">

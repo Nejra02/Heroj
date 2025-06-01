@@ -14,7 +14,7 @@ const SignIn = () => {
     e.preventDefault();
 
     const formData = new URLSearchParams();
-    formData.append("username", email);   // FastAPI OAuth2 expects "username"
+    formData.append("username", email); 
     formData.append("password", password);
 
     try {
@@ -29,6 +29,14 @@ const SignIn = () => {
 
       if (!response.ok) {
         throw new Error("Login failed");
+      }
+
+      const userResponse = await fetch("http://localhost:8000/users/me", {
+        credentials: "include",
+      });
+
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user info");
       }
 
       const data = await response.json();

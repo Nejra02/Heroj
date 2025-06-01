@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "../styles/Edukacija.css";
 import Kviz from "./Kviz.js";
@@ -13,17 +14,45 @@ export default function Edukacija() {
   const [osnovne, setOsnovne] = useState([]);
   const [povrede, setPovrede] = useState([]);
   const [videoList, setVideoList] = useState([]);
+  const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    fetch("http://localhost:8000/edukacija")
-      .then((res) => res.json())
-      .then((data) => {
-        setOsnovne(data.osnovne_tehnike);
-        setPovrede(data.pristup_povredi);
-        setVideoList(data.videi);
+      const hostname = window.location.hostname;
+      const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
+
+      // Prvo provjera sesije
+      fetch(`${apiBase}/users/me`, {
+        credentials: "include",
       })
-      .catch((err) => console.error("Greška:", err));
-  }, []);
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Unauthorized");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data.role !== "user" && data.role !== "admin") {
+            throw new Error("Unauthorized role");
+          }
+          setUserRole(data.role); // Ako je OK, setuj userRole
+
+          // Tek sada fetch edukacije
+          fetch(`${apiBase}/edukacija`)
+            .then((res) => res.json())
+            .then((data) => {
+              setOsnovne(data.osnovne_tehnike);
+              setPovrede(data.pristup_povredi);
+              setVideoList(data.videi);
+            })
+            .catch((err) => console.error("Greška:", err));
+        })
+        .catch((error) => {
+          console.error("Unauthorized access or error:", error);
+          navigate("/signin");
+        });
+    }, [navigate]);
 
   return (
     <div className="page">

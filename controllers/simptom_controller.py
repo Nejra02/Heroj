@@ -22,7 +22,7 @@ def search_simptom(
     if not simptom:
         raise HTTPException(status_code=404, detail="Simptom nije pronađen.")
 
-    if current_user:
+    if current_user and current_user.role == "user":
         user_simptom = User_simptom(user_id=current_user.user_id, simptom_id=simptom.simptom_id)
         db.add(user_simptom)
         db.commit()
