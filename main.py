@@ -5,7 +5,7 @@ from database import engine
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from controllers import user_controller, pomoc_controller, simptom_controller, povreda_controller, edukacija_controller, user_history_controller, pitanja_controller, auth
+from controllers import user_controller, pomoc_controller, simptom_controller, povreda_controller, edukacija_controller, user_history_controller, pitanja_controller, auth, forum_controller, user_forum_controller
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -49,4 +49,5 @@ app.include_router(povreda_controller.router)
 app.include_router(edukacija_controller.router)
 app.include_router(user_history_controller.router)
 app.include_router(pitanja_controller.router)
-
+app.include_router(forum_controller.router)
+app.include_router(user_forum_controller.router)

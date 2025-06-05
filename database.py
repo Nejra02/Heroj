@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from sqlmodel import create_engine
+from sqlmodel import SQLModel, create_engine, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 sqlite_file_name = "database.db"
@@ -17,3 +17,8 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session

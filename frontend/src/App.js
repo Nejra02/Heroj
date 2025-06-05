@@ -3,7 +3,7 @@ import Kviz from "./pages/Kviz";
 import Edukacija from "./pages/Edukacija";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboad";
-
+import Forum from "./pages/Forum"
 import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn'; // Removed duplicate import
 import SignUp from './pages/SignUp';
@@ -20,7 +20,7 @@ function App() {
         <Route path="/admin_dashboard" element={<AdminDashboard />} />
         <Route path="/kviz" element={<Kviz />} />
         <Route path="/edukacija" element={<Edukacija />} />
-        
+        <Route path="/forum" element={<Forum />} />
         <Route index element={<LandingPage />} />
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
