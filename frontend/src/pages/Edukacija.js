@@ -56,6 +56,17 @@ export default function Edukacija() {
         });
     }, [navigate]);
 
+    const handlePovratak = () => {
+    if (userRole === "admin") {
+      navigate("/admin_dashboard");
+    } else if (userRole === "user") {
+      navigate("/user_dashboard");
+    } else {
+      navigate("/signin");
+    }
+  };
+
+
   return (
     <div className="page">
       <nav className="navbar-edukacija">
@@ -67,7 +78,9 @@ export default function Edukacija() {
           <Link to="/kviz">Kviz</Link>
           <Link to="/forum">Forum</Link>
           
-          <Link to="/user_dashboard">Nazad</Link>
+           <button onClick={handlePovratak} className="nav-nazad">
+                 Nazad
+              </button>
           
         </div>
       </nav>

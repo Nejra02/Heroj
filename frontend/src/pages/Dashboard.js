@@ -3,6 +3,7 @@ import "../styles/main.css";
 import "../styles/landingpage.css";
 import "../styles/dashboard.css";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function Dashboard() {
   const [povrede, setPovrede] = useState([]);
@@ -59,7 +60,10 @@ useEffect(() => {
       navigate("/dashboard");
       window.location.reload(); 
     } catch (err) {
-      alert(err.message);
+      Swal.fire({
+              title: 'Greška',
+              text: err.message
+            });
     }
   };
 

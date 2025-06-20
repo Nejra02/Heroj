@@ -3,6 +3,8 @@ import '../styles/signin.css';
 import '../styles/main.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 
 const SignIn = () => {
@@ -44,15 +46,28 @@ const SignIn = () => {
 
       
       if (data.role === "admin") {
+        Swal.fire({
+          title: 'Prijava uspješna!',
+          showConfirmButton: false,
+          timer: 1500
+        });
         navigate("/admin_dashboard");
       } else if (data.role === "user") {
+        Swal.fire({
+          title: 'Prijava uspješna!',
+          showConfirmButton: false,
+          timer: 1500
+        });
         navigate("/user_dashboard");
       } else {
         navigate("/");
       }
     } catch (error) {
       console.error(error.message);
-      alert("Neuspješna prijava. Pokušaj ponovo.");
+      Swal.fire({
+        title: 'Greška',
+        text: 'Neuspješna prijava. Pokušaj ponovo.',
+      });
     }
   };
 

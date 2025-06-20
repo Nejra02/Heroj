@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/AdminDashboard.css";
+import Swal from 'sweetalert2';
 
 export default function UserAdminPanel() {
   const [search, setSearch] = useState("");
@@ -120,21 +121,45 @@ export default function UserAdminPanel() {
       });
       setQuestions([...questions, res.data]);
       setNewQ({ pitanje: "", tacan: "", netacan1: "", netacan2: "" });
-      alert("Pitanje je uspešno dodano.");
+      Swal.fire({
+        title: 'Uspješno dodano!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (err) {
-      alert(err.message);
+      Swal.fire({
+        title: 'Greška',
+        text: err.message
+      });
+
     }
   };
 
   const handleDeleteQuestion = async (id) => {
-    const confirmDelete = window.confirm("Da li sigurno želiš obrisati ovo pitanje?");
-    if (!confirmDelete) return;
+    const result = await Swal.fire({
+      title: "Jesi li siguran?",
+      text: "Ova akcija će obrisati pitanje trajno.",
+      showCancelButton: true,
+      confirmButtonText: "Da",
+      cancelButtonText: "Otkaži"
+    });
+
+    if (!result.isConfirmed) return;
+
 
     try {
       await axios.delete(`${apiBase}/kviz/pitanja/${id}`);
       setQuestions(questions.filter((q) => q.pitanja_id !== id));
+      Swal.fire({
+        title: 'Pitanje obrisano!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (err) {
-      alert(err.message);
+      Swal.fire({
+        title: 'Greška',
+        text: err.message
+      });
     }
   };
 
@@ -151,7 +176,7 @@ export default function UserAdminPanel() {
       localStorage.setItem("search-origin", "admin_dashboard");
       window.location.href = "/dashboard";
     } catch (err) {
-      alert(err.message);
+      Swal.fire({ title: "Greška", text: err.message, icon: "none" });
     }
   };
 
@@ -167,8 +192,18 @@ export default function UserAdminPanel() {
       setOsnovne([...osnovne, res.data]);
       setNovaTehnikaNaziv("");
       setNovaTehnikaOpis("");
+      Swal.fire({
+        title: 'Uspješno dodano!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+
     } catch (err) {
-      alert(err.message);
+      Swal.fire({
+        title: 'Greška',
+        text: err.message
+      });
+
     }
   };
 
@@ -184,8 +219,13 @@ export default function UserAdminPanel() {
       setPovrede([...povrede, res.data]);
       setNovaPovredaNaziv("");
       setNovaPovredaOpis("");
+      Swal.fire({
+        title: 'Uspješno dodano!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (err) {
-      alert(err.message);
+      Swal.fire({ title: "Greška", text: err.message, icon: "none" });
     }
   };
 
@@ -199,8 +239,13 @@ export default function UserAdminPanel() {
       });
       setVideoList([...videoList, res.data]);
       setNoviVideoLink("");
+      Swal.fire({
+        title: 'Uspješno dodano!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (err) {
-      alert(err.message);
+      Swal.fire({ title: "Greška", text: err.message, icon: "none" });
     }
   };
 
@@ -220,13 +265,26 @@ export default function UserAdminPanel() {
         console.log(data); 
         localStorage.clear();
         window.location.href = "/signin";
+        Swal.fire({
+        title: 'Uspješna odjava!',
+        showConfirmButton: false,
+        timer: 1500
+      });
       } else {
         console.error("Logout nije uspio:", data); 
-        alert("Logout nije uspio.");
+        Swal.fire({
+        title: 'Neuspješna odjava!',
+        showConfirmButton: false,
+        timer: 1500
+      });
       }
     } catch (err) {
       console.error("Greška pri logoutu:", err);
-      alert("Došlo je do greške.");
+      Swal.fire({
+        title: 'Greška pri odjavi!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 

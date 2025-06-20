@@ -3,6 +3,8 @@ import '../styles/signin.css';
 import '../styles/main.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
   ime: '',
@@ -19,7 +21,11 @@ const handleChange = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   if (formData.password !== formData.confirmPassword) {
-    alert("Šifre se ne podudaraju!");
+     Swal.fire({
+        title: 'Šifre se ne podudaraju!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     return;
   }
 
@@ -32,11 +38,19 @@ const handleSubmit = async (e) => {
       password: formData.password,
       role: "user"
     });
-    alert("Registracija uspješna!");
+     Swal.fire({
+        title: 'Registracija uspješna!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     window.location.href = "/signin";
   } catch (error) {
     console.error(error);
-    alert("Greška pri registraciji.");
+     Swal.fire({
+      title: 'Greška pri registraciji!',
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
 };
 

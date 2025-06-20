@@ -3,6 +3,7 @@ import "../styles/landingpage.css";
 import "../styles/main.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 function LandingPage() {
   const [pomoci, setPomoci] = useState([]);
@@ -43,7 +44,10 @@ function LandingPage() {
     localStorage.setItem("search-origin", "landing_page");
     navigate("/dashboard");
   } catch (err) {
-    alert(err.message);
+    Swal.fire({
+            title: 'Greška',
+            text: err.message
+          });
   }
 };
 const handleGoToSignup = () => {

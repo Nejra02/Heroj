@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../styles/UserDashboard.css";
+import Swal from 'sweetalert2';
 
 export default function UserDashboard() {
   const [username, setUsername] = useState("Korisnik");
@@ -77,7 +78,7 @@ export default function UserDashboard() {
       localStorage.setItem("search-origin", "user_dashboard");
       window.location.href = "/dashboard"; 
     } catch (err) {
-      alert(err.message);
+       Swal.fire({ title: "Greška", text: err.message, icon: "none" });
     }
   };
 
@@ -97,13 +98,26 @@ export default function UserDashboard() {
         console.log(data);
         localStorage.clear();
         window.location.href = "/signin";
+        Swal.fire({
+        title: 'Uspješna odjava!',
+        showConfirmButton: false,
+        timer: 1500
+      });
       } else {
         console.error("Logout nije uspio:", data); 
-        alert("Logout nije uspio.");
+        Swal.fire({
+        title: 'Neuspješna odjava!',
+        showConfirmButton: false,
+        timer: 1500
+      });
       }
     } catch (err) {
       console.error("Greška pri logoutu:", err);
-      alert("Došlo je do greške.");
+      Swal.fire({
+        title: 'Greška pri odjavi!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 

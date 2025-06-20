@@ -7,43 +7,71 @@ export default function Forum() {
   const [objave, setObjave] = useState([]);
   const [novaObjava, setNovaObjava] = useState("");
   const [noviKomentari, setNoviKomentari] = useState({});
+  const [userRole, setUserRole] = useState(null);
 
   const hostname = window.location.hostname;
   const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
 
-  const fetchObjave = async () => {
+  const fetchUserById = async (userId) => {
     try {
-      const response = await fetch(`${apiBase}/forum/`);
-      const data = await response.json();
-      setObjave(data);
-    } catch (err) {
-      console.error("Greška pri dohvaćanju objava:", err);
+      const res = await fetch(`${apiBase}/auth/users/view/${userId}`, {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    } catch {
+      return null;
     }
   };
-    useEffect(() => {
+
+  useEffect(() => {
     const checkRole = async () => {
       try {
         const res = await fetch(`${apiBase}/users/me`, {
           credentials: "include",
         });
-        if (!res.ok) {
-          throw new Error("Unauthorized");
-        }
+        if (!res.ok) throw new Error();
         const data = await res.json();
-        if (data.role !== "user" && data.role !== "admin") {
-          throw new Error("Unauthorized role");
-        }
-      } catch (error) {
-        console.error("Unauthorized access or error:", error);
-        navigate("/signin"); 
+        if (data.role !== "user" && data.role !== "admin") throw new Error();
+        setUserRole(data.role);
+      } catch {
+        navigate("/signin");
       }
     };
-
     checkRole();
   }, [navigate, apiBase]);
 
   useEffect(() => {
-    fetchObjave();
+    const fetchSve = async () => {
+      try {
+        const res = await fetch(`${apiBase}/forum/`);
+        const data = await res.json();
+        const allUserIds = new Set();
+        data.forEach((objava) => {
+          objava.komentari.forEach((komentar) => {
+            allUserIds.add(komentar.user_id);
+          });
+        });
+        const userMap = {};
+        await Promise.all(
+          Array.from(allUserIds).map(async (id) => {
+            const user = await fetchUserById(id);
+            if (user) userMap[id] = user;
+          })
+        );
+        const enriched = data.map((objava) => ({
+          ...objava,
+          komentari: objava.komentari.map((k) => ({
+            ...k,
+            autor: userMap[k.user_id] || null,
+          })),
+        }));
+        setObjave(enriched);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSve();
   }, [apiBase]);
 
   const handleNovaObjava = async (e) => {
@@ -57,18 +85,15 @@ export default function Forum() {
       });
       if (response.ok) {
         setNovaObjava("");
-        fetchObjave();
+        window.location.reload();
       }
-    } catch (err) {
-      console.error("Greška pri dodavanju objave:", err);
-    }
+    } catch {}
   };
 
   const handleNoviKomentar = async (e, objavaId) => {
     e.preventDefault();
     try {
       const komentar = noviKomentari[objavaId];
-
       const response = await fetch(`${apiBase}/user_forum/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -80,22 +105,28 @@ export default function Forum() {
       });
       if (response.ok) {
         setNoviKomentari((prev) => ({ ...prev, [objavaId]: "" }));
-        fetchObjave();
+        window.location.reload();
       }
-    } catch (err) {
-      console.error("Greška pri dodavanju komentara:", err);
-    }
+    } catch {}
   };
 
   const handlePovratak = () => {
-    window.location.href = "/user_dashboard";
+    if (userRole === "admin") {
+      navigate("/admin_dashboard");
+    } else if (userRole === "user") {
+      navigate("/user_dashboard");
+    } else {
+      navigate("/signin");
+    }
   };
 
   return (
     <div className="forum-page">
       <header className="forum-header">
         <h1>Forum</h1>
-        <button onClick={handlePovratak} className="povratak-btn">Nazad</button>
+        {userRole && (
+          <button onClick={handlePovratak} className="povratak-btn">Nazad</button>
+        )}
       </header>
 
       <form className="nova-objava-form" onSubmit={handleNovaObjava}>
@@ -115,6 +146,13 @@ export default function Forum() {
             <div className="komentari-container">
               {objava.komentari.map((komentar) => (
                 <div key={komentar.komentar_id} className="komentar">
+                  <strong>
+                    {komentar.autor?.role === "admin"
+                      ? "Admin"
+                      : komentar.autor?.username || "Nepoznat"}
+                    :
+                  </strong>
+                  {" "}
                   {komentar.tekst_komentara}
                 </div>
               ))}

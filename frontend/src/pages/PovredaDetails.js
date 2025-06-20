@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 import "../styles/main.css";
 import "../styles/landingpage.css";
 
@@ -21,7 +22,10 @@ export default function PovredaDetails() {
       })
       .then(setData)
       .catch((err) => {
-        alert(err.message);
+        Swal.fire({
+          title: 'Greška',
+          text: err.message
+        });
         navigate("/dashboard");
       });
 

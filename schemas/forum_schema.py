@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class KomentarOut(BaseModel):
     komentar_id: int
     tekst_komentara: str
+    user_id: int
 
     class Config:
         orm_mode = True

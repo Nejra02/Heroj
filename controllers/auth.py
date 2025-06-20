@@ -5,6 +5,8 @@ from services.auth_service import authenticate_user, create_access_token
 from services.user_service import create_user_service
 from schemas.user_schema import CreateUserRequest, Token
 from database import SessionLocal
+from models.user_model import User  
+from schemas.user_schema import UserOut
 
 router = APIRouter(prefix='/auth', tags=["auth"], responses={401: {"description": "Not authorized"}})
 
@@ -39,3 +41,10 @@ async def login_for_access_token(response: Response, form_data: OAuth2PasswordRe
 async def logout(response: Response):
     response.delete_cookie(key="access_token")
     return {"message": "Logged out successfully"}
+
+@router.get("/users/view/{user_id}", response_model=UserOut)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
