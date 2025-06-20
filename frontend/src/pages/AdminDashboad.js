@@ -214,14 +214,14 @@ export default function UserAdminPanel() {
         credentials: "include",
       });
 
-      const data = await res.json();  // čitamo šta kaže server
+      const data = await res.json();  
 
       if (res.ok) {
-        console.log(data); // <-- ispiši response
+        console.log(data); 
         localStorage.clear();
         window.location.href = "/signin";
       } else {
-        console.error("Logout nije uspio:", data); // <-- vidi šta ti server kaže
+        console.error("Logout nije uspio:", data); 
         alert("Logout nije uspio.");
       }
     } catch (err) {

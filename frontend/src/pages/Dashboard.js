@@ -57,7 +57,7 @@ useEffect(() => {
       console.log("Rezultat pretrage:", data);
       localStorage.setItem("povrede", JSON.stringify(data));
       navigate("/dashboard");
-      window.location.reload(); // ključno da se prikaz osvježi
+      window.location.reload(); 
     } catch (err) {
       alert(err.message);
     }
@@ -96,7 +96,7 @@ useEffect(() => {
               } else if (origin === "admin_dashboard") {
                 navigate("/admin_dashboard");
               } else {
-                navigate("/");  // landing page fallback
+                navigate("/");  
               }
             }}>
               Nazad

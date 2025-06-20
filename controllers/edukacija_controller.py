@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from schemas.edukacija_schema import EdukacijaResponse, OsnovnaTehnikaCreate, PristupPovrediCreate, VideoCreate
-from services import edukacija_service  # <<< ovo mijenjamo
+from services import edukacija_service
 
 router = APIRouter()
 

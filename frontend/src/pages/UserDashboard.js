@@ -13,7 +13,7 @@ export default function UserDashboard() {
     const hostname = window.location.hostname;
     const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
 
-    // Provjera ulogovanog korisnika
+    
     fetch(`${apiBase}/users/me`, {
       credentials: "include",
     })
@@ -98,7 +98,7 @@ export default function UserDashboard() {
         localStorage.clear();
         window.location.href = "/signin";
       } else {
-        console.error("Logout nije uspio:", data); // <-- vidi šta ti server kaže
+        console.error("Logout nije uspio:", data); 
         alert("Logout nije uspio.");
       }
     } catch (err) {

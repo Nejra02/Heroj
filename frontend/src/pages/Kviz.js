@@ -132,10 +132,10 @@ export default function Kviz() {
           </div>
 
           <button onClick={() => setKvizZapoceo(true)} className="kviz-btn primary">
-            🚀 Započni kviz
+             Započni kviz
           </button>
           <button onClick={handlePovratak} className="kviz-btn secondary">
-            ← Nazad na početnu
+             Nazad na početnu
           </button>
         </div>
       </div>
@@ -156,13 +156,13 @@ export default function Kviz() {
                 <strong>{pitanja.length}</strong> pitanja.
               </p>
               <button onClick={() => setPrikaziPregled(true)} className="kviz-btn primary">
-                📋 Pogledaj odgovore
+                 Pogledaj odgovore
               </button>
               <button onClick={pokreniPonovo} className="kviz-btn primary">
-                🔁 Pokreni novi kviz
+                 Pokreni novi kviz
               </button>
               <button onClick={handlePovratak} className="kviz-btn secondary">
-                ← Povratak na dashboard
+                 Povratak na dashboard
               </button>
             </>
           ) : (
@@ -185,10 +185,10 @@ export default function Kviz() {
                 ))}
               </div>
               <button onClick={pokreniPonovo} className="kviz-btn primary">
-                🔁 Pokreni novi kviz
+                 Pokreni novi kviz
               </button>
               <button onClick={handlePovratak} className="kviz-btn secondary">
-                ← Nazad
+                 Nazad
               </button>
             </>
           )}

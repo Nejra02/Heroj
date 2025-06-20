@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Forum.css";
 
 export default function Forum() {
+  const navigate = useNavigate();
   const [objave, setObjave] = useState([]);
   const [novaObjava, setNovaObjava] = useState("");
   const [noviKomentari, setNoviKomentari] = useState({});
@@ -18,6 +20,27 @@ export default function Forum() {
       console.error("Greška pri dohvaćanju objava:", err);
     }
   };
+    useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch(`${apiBase}/users/me`, {
+          credentials: "include",
+        });
+        if (!res.ok) {
+          throw new Error("Unauthorized");
+        }
+        const data = await res.json();
+        if (data.role !== "user" && data.role !== "admin") {
+          throw new Error("Unauthorized role");
+        }
+      } catch (error) {
+        console.error("Unauthorized access or error:", error);
+        navigate("/signin"); 
+      }
+    };
+
+    checkRole();
+  }, [navigate, apiBase]);
 
   useEffect(() => {
     fetchObjave();

@@ -1,4 +1,4 @@
-# repositories/user_history_repository.py
+
 from sqlalchemy.orm import Session
 from models.user_povreda_model import User_povreda
 from models.user_simptom_model import User_simptom

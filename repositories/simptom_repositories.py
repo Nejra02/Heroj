@@ -5,7 +5,7 @@ def get_simptom_by_id(db: Session, simptom_id: int):
     simptom = db.get(Simptom, simptom_id)
     if not simptom:
         return None
-    # Split tekst po "|" i formatirati u "Korak 1: ..."
+    
     
     return {
         "simptom_id": simptom.simptom_id,

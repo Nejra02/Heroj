@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/Edukacija.css";
 import Kviz from "./Kviz.js";
+import Forum from "./Forum.js";
+import UserDashboard from "./UserDashboard.js"
 
 export default function Edukacija() {
   const [openOsnovne, setOpenOsnovne] = useState(false);
@@ -22,7 +24,7 @@ export default function Edukacija() {
       const hostname = window.location.hostname;
       const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
 
-      // Prvo provjera sesije
+      
       fetch(`${apiBase}/users/me`, {
         credentials: "include",
       })
@@ -36,9 +38,9 @@ export default function Edukacija() {
           if (data.role !== "user" && data.role !== "admin") {
             throw new Error("Unauthorized role");
           }
-          setUserRole(data.role); // Ako je OK, setuj userRole
+          setUserRole(data.role); 
 
-          // Tek sada fetch edukacije
+          
           fetch(`${apiBase}/edukacija`)
             .then((res) => res.json())
             .then((data) => {
@@ -63,7 +65,10 @@ export default function Edukacija() {
           </div>
         <div className="nav-links">
           <Link to="/kviz">Kviz</Link>
-          <a href="/forum">Forum</a>
+          <Link to="/forum">Forum</Link>
+          
+          <Link to="/user_dashboard">Nazad</Link>
+          
         </div>
       </nav>
 

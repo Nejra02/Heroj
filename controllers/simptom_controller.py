@@ -16,7 +16,7 @@ router = APIRouter()
 def search_simptom(
     s: str,
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_user_optional)  # Ovde omogućavamo GOSTE
+    current_user = Depends(get_current_user_optional)  
 ):
     simptom = get_simptom_by_name(db, s)
     if not simptom:

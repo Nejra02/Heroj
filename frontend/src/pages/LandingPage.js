@@ -55,7 +55,7 @@ const handleGoToSignIn= () => {
 
   return (
     <div className="landing-wrapper">
-      {/* SVE UNUTAR JEDNOG BUBBLE-a */}
+      
       <div className="main-bubble">
         {/* NAVBAR */}
         <nav className="navbar inside-bubble-nav">

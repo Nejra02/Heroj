@@ -23,7 +23,7 @@ const SignIn = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        credentials: "include", // koristi ovo ako backend šalje HttpOnly cookie
+        credentials: "include", 
         body: formData.toString(),
       });
 
@@ -42,7 +42,7 @@ const SignIn = () => {
       const data = await response.json();
       console.log("Token:", data.access_token, "Role:", data.role);
 
-      // Rutiranje zavisno od role
+      
       if (data.role === "admin") {
         navigate("/admin_dashboard");
       } else if (data.role === "user") {
@@ -65,7 +65,7 @@ const SignIn = () => {
           </div>
         </div>
         
-        {/* Form Section */}
+        
         <div className="col-lg-6 d-flex align-items-center justify-content-center form-col">
           <div className="form-container p-4 p-md-5">
             <div className="text-center mb-5">
@@ -77,7 +77,7 @@ const SignIn = () => {
             </div>
 
             <form onSubmit={handleSubmit} > 
-            {/* editovano  */}
+            
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email adresa</label>
                 <input type="email"
