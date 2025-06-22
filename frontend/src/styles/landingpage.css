@@ -33,6 +33,7 @@ body {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
@@ -42,22 +43,22 @@ body {
 }
 
 .navbar-left img {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
 }
 
 .logo-text {
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--dark-red);
   margin-left: 12px;
 }
 
 .navbar-center {
-  flex: 1;
+  flex-grow: 1;
   display: flex;
   justify-content: center;
-  margin: 10px 0;
+  margin: 0 2rem;
 }
 
 .search-bar {
@@ -66,19 +67,25 @@ body {
   border: 2px solid var(--blue);
   width: 100%;
   max-width: 400px;
-  font-size: 1vw;
+  font-size: 1rem;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .navbar-right .btn {
-  margin-left: 15px;
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-radius: 20px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 1rem;
   border: 2px solid var(--red);
   background-color: white;
   color: var(--red);
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .navbar-right .btn.signup {
@@ -87,12 +94,9 @@ body {
 }
 
 
-.navbar-right .btn.login:hover {
-  color: var(--red);
-}
-
 .navbar-right .btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 /* Hero and grid */

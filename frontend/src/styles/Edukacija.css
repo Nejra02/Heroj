@@ -11,7 +11,6 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--rozasaslike);
   color: var(--tekst);
 }
 
@@ -19,86 +18,108 @@ body {
   padding: 15px 15px;
   max-width: 1200px;
   margin: 10px auto;
+  min-height: 100vh;
 }
 
 /* NAVBAR */
-.navbar-edukacija { 
+.navbar-edukacija {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  background-color: var(--rozasaslike);
+  flex-wrap: wrap;
+  background-color: white;
+  padding: 1rem 2rem;
   border-radius: 20px;
-  padding: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
-.lijevo {
+.navbar-left {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background-color: inherit;
+  gap: 1rem;
 }
 
-.lijevo img {
-  width: 60px;
-  height: 60px;
-  background-color: inherit;
+.navbar-left img {
+  width: 50px;
+  height: 50px;
 }
 
 .logo {
-  font-size: 20px;
+  font-size: 2rem;
+  font-weight: bold;
   color: var(--dark-red);
-  margin-left: 10px;
-  background-color: inherit;
-  display: flex;
-  align-items: center;
-  height: 60px;
 }
 
-
-.nav-links {
+.navbar-center {
+  flex-grow: 1;
   display: flex;
-  gap: 1rem;
-  background-color: inherit;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.search-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-bar {
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 2px solid var(--blue);
+  width: 100%;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-right a {
+  color: var(--dark-red);
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s;
   text-transform: uppercase;
 }
 
-.nav-links a {
-  display: flex;
-  padding: 0.4rem 1rem;
-  text-decoration: none;
-  color: var(--dark-red);
-  background-color: var(--rozasaslike);
-  border-radius: 0.5rem;
-  align-items: center;
-  justify-content: center;
+.navbar-right a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: var(--dark-red);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
 }
 
-.nav-links .nav-nazad {
-  padding: 0.4rem 1rem;
-  height: 40px;
-  display: flex;
-  align-items: center;      
-  justify-content: center;  
+.navbar-right a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 .nav-nazad {
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+  background-color: var(--red);
   color: white;
   border: none;
-  background-color: var(--crvena);
-  transition: background 0.3s;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
 }
 
 .nav-nazad:hover {
-  background-color: #a10000; 
+  background-color: var(--dark-red);
 }
-
-
-
 
 /* HERO SEKCIJA */
 .hero {
@@ -130,8 +151,6 @@ body {
   background-color: inherit;
 }
 
-
-
 .hero-image {
   max-width: 300px;
   width: 90%;
@@ -148,7 +167,6 @@ body {
   background-color: inherit;
 }
 
-
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -164,6 +182,13 @@ body {
   border-radius: 20px;
   border: 2px solid var(--dark-red);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .card h3 {
@@ -185,15 +210,29 @@ body {
     text-align: center;
   }
 
-  .nav-links {
-    display: flex;
+  .navbar-edukacija {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .navbar-left {
+    flex-direction: column;
+  }
+
+  .logo {
+    margin-left: 0;
+    height: auto;
+  }
+
+  .navbar-right {
     flex-direction: column;
     gap: 10px;
   }
 
-  .navbar {
-    flex-direction: column;
-    gap: 10px;
+  .navbar-right a {
+    padding: 0.6rem 1.2rem;
   }
 }
 :root {
@@ -275,7 +314,6 @@ body {
   transform: scale(1.05); 
 }
 
-
 @media screen and (max-width: 768px) {
   .accordion-button {
     font-size: 22px;
@@ -287,32 +325,5 @@ body {
 
   .linija {
     font-size: 15px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .navbar-edukacija {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-  }
-
-  .lijevo {
-    flex-direction: column;
-  }
-
-  .logo {
-    margin-left: 0;
-    height: auto;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .nav-links a {
-    padding: 0.6rem 1.2rem;
   }
 }

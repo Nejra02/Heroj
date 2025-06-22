@@ -8,9 +8,9 @@
 
 .dashboard-container {
   padding: 40px 20px;
-  background-color: var(--cream);
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
 }
 
 .dashboard-title {

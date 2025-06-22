@@ -14,9 +14,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
+  min-height: 100vh;
+}
+
 .landing-wrapper {
   padding: 12px;
   background: linear-gradient(to bottom right, var(--blue), #ffe6e6);
+  min-height: 100vh;
 }
 
 html, body {
