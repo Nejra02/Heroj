@@ -29,7 +29,7 @@
 
 .overlay-text {
   position: absolute;
-  top: 30px; /* udalji od vrha */
+  top: 30px;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
@@ -50,13 +50,11 @@
   margin-bottom: 8px;
 }
 
-/* KOMPAKTNA FORMA */
-
 .form-col {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Ovo centriranje po visini */
+  min-height: 100vh; 
   padding: 20px;
   background-color: inherit;
 }
@@ -71,7 +69,6 @@
   padding: 40px 18px;
 }
 
-/* Kompaktni heading i paragraf */
 .form-container h2 {
   font-size: 1.3rem;
   margin-bottom: 8px;
@@ -93,7 +90,6 @@
   text-decoration: underline;
 }
 
-/* Input spacing */
 .form-container .mb-3,
 .form-container .mb-4 {
   margin-bottom: 10px;
@@ -140,9 +136,6 @@ a.text-link {
   }
 }
 
-/* ==== RESPONSIVE STYLING ==== */
-
-/* Telefoni: max širina 576px */
 @media (max-width: 576px) {
   .form-container {
     padding: 16px;
@@ -170,7 +163,6 @@ a.text-link {
   }
 }
 
-/* Tableti */
 @media (max-width: 991px) {
   .form-container {
     max-width: 90%;

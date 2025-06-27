@@ -1,4 +1,4 @@
-# services/user_history_service.py
+
 from sqlalchemy.orm import Session
 from repositories import user_history_repositories
 

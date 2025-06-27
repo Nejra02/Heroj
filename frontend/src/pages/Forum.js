@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/main.css";
 import "../styles/Forum.css";
 
 export default function Forum() {
@@ -8,6 +9,7 @@ export default function Forum() {
   const [novaObjava, setNovaObjava] = useState("");
   const [noviKomentari, setNoviKomentari] = useState({});
   const [userRole, setUserRole] = useState(null);
+  const [search, setSearch] = useState("");
 
   const hostname = window.location.hostname;
   const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
@@ -121,59 +123,68 @@ export default function Forum() {
   };
 
   return (
-    <div className="forum-page">
-      <header className="forum-header">
-        <h1>Forum</h1>
-        {userRole && (
-          <button onClick={handlePovratak} className="povratak-btn">Nazad</button>
-        )}
-      </header>
-
-      <form className="nova-objava-form" onSubmit={handleNovaObjava}>
-        <textarea
-          value={novaObjava}
-          onChange={(e) => setNovaObjava(e.target.value)}
-          placeholder="Napiši novu objavu..."
-          required
-        />
-        <button type="submit">Objavi</button>
-      </form>
-
-      <div className="objave-container">
-        {objave.map((objava) => (
-          <div key={objava.objava_id} className="objava-card">
-            <p className="tekst-objave">{objava.tekst_objave}</p>
-            <div className="komentari-container">
-              {objava.komentari.map((komentar) => (
-                <div key={komentar.komentar_id} className="komentar">
-                  <strong>
-                    {komentar.autor?.role === "admin"
-                      ? "Admin"
-                      : komentar.autor?.username || "Nepoznat"}
-                    :
-                  </strong>
-                  {" "}
-                  {komentar.tekst_komentara}
-                </div>
-              ))}
-            </div>
-            <form onSubmit={(e) => handleNoviKomentar(e, objava.objava_id)} className="novi-komentar-form">
-              <input
-                type="text"
-                value={noviKomentari[objava.objava_id] || ""}
-                onChange={(e) =>
-                  setNoviKomentari((prev) => ({
-                    ...prev,
-                    [objava.objava_id]: e.target.value,
-                  }))
-                }
-                placeholder="Dodaj komentar..."
-                required
-              />
-              <button type="submit">Komentariši</button>
-            </form>
+    <div className="landing-wrapper">
+      <div className="main-bubble">
+        <nav className="navbar">
+          <div className="navbar-left">
+            <img src="/logo.png" alt="Logo"/>
+            <span className="logo-text">Forum</span>
           </div>
-        ))}
+          <div className="navbar-right">
+            <Link to="/kviz" className="nav-link">KVIZ</Link>
+            <Link to="/edukacija" className="nav-link">EDUKACIJA</Link>
+            <button onClick={handlePovratak} className="logout-button">Nazad</button>
+          </div>
+        </nav>
+
+        <div className="forum-content">
+          <form className="nova-objava-form" onSubmit={handleNovaObjava}>
+            <textarea
+              value={novaObjava}
+              onChange={(e) => setNovaObjava(e.target.value)}
+              placeholder="Napiši novu objavu..."
+              required
+            />
+            <button type="submit">Objavi</button>
+          </form>
+
+          <div className="objave-container">
+            {objave.map((objava) => (
+              <div key={objava.objava_id} className="objava-card">
+                <p className="tekst-objave">{objava.tekst_objave}</p>
+                <div className="komentari-container">
+                  {objava.komentari.map((komentar) => (
+                    <div key={komentar.komentar_id} className="komentar">
+                      <strong>
+                        {komentar.autor?.role === "admin"
+                          ? "Admin"
+                          : komentar.autor?.username || "Nepoznat"}
+                        :
+                      </strong>
+                      {" "}
+                      {komentar.tekst_komentara}
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={(e) => handleNoviKomentar(e, objava.objava_id)} className="novi-komentar-form">
+                  <input
+                    type="text"
+                    value={noviKomentari[objava.objava_id] || ""}
+                    onChange={(e) =>
+                      setNoviKomentari((prev) => ({
+                        ...prev,
+                        [objava.objava_id]: e.target.value,
+                      }))
+                    }
+                    placeholder="Dodaj komentar..."
+                    required
+                  />
+                  <button type="submit">Komentariši</button>
+                </form>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

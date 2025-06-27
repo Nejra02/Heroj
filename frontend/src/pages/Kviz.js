@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/main.css";
 import "../styles/Kviz.css";
 import "../styles/landingpage.css";
 
@@ -15,7 +16,8 @@ export default function Kviz() {
   const [rezultat, setRezultat] = useState(null);
   const [prikaziPregled, setPrikaziPregled] = useState(false);
   const [kvizZapoceo, setKvizZapoceo] = useState(false);
-  const [userRole, setUserRole] = useState(null); 
+  const [userRole, setUserRole] = useState(null);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -121,24 +123,37 @@ export default function Kviz() {
 
   if (!kvizZapoceo) {
     return (
-      <div className="kviz-wrapper">
-        <div className="kviz-container">
-          <h1 className="kviz-title">Dobrodošli u kviz!</h1>
-          <div className="kviz-uvod">
-            <p>Testirajte svoje znanje!</p>
-            <p>Kviz se sastoji od 10 pitanja, a za svako pitanje ponuđena su tri odgovora.</p>
-            <p>Samo jedan odgovor je tačan – odaberite pažljivo!</p>
-            <p>Sretno!</p>
-          </div>
+        <div className="landing-wrapper">
+            <div className="main-bubble">
+                <nav className="navbar">
+                    <div className="navbar-left">
+                        <img src="/logo.png" alt="Logo" />
+                        <span className="logo-text">Heroj</span>
+                    </div>
+                    <div className="navbar-right">
+                        <button onClick={handlePovratak} className="logout-button">
+                            Nazad
+                        </button>
+                    </div>
+                </nav>
+                <div className="kviz-intro-content">
+                    <h1 className="kviz-title">Dobrodošli u kviz!</h1>
+                    <div className="kviz-uvod">
+                        <p>Testirajte svoje znanje!</p>
+                        <p>Kviz se sastoji od 10 pitanja, a za svako pitanje ponuđena su tri odgovora.</p>
+                        <p>Samo jedan odgovor je tačan – odaberite pažljivo!</p>
+                        <p>Sretno!</p>
+                    </div>
 
-          <button onClick={() => setKvizZapoceo(true)} className="kviz-btn primary">
-             Započni kviz
-          </button>
-          <button onClick={handlePovratak} className="kviz-btn secondary">
-             Nazad na početnu
-          </button>
+                    <button onClick={() => setKvizZapoceo(true)} className="kviz-btn primary">
+                        Započni kviz
+                    </button>
+                    <button onClick={handlePovratak} className="kviz-btn secondary">
+                        Nazad na početnu
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     );
   }
 

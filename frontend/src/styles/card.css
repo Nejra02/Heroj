@@ -7,13 +7,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  /* Dodano: limit visine */
   max-height: 300px;
   overflow-y: auto;
-  cursor: pointer; /* da se vidi da je klikabilno */
+  cursor: pointer; 
   transition: transform 0.2s ease;
-  margin-bottom: 20px; /* ili koliko ti paše */
+  margin-bottom: 20px;
 
 }
 

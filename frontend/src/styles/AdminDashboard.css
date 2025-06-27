@@ -14,89 +14,120 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--pozadina);
 }
 
-.admin-panel-wrapper {
-  min-height: 100vh;
-}
-
-.admin-header {
+.navbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background-color: var(--rozasaslike);
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: white;
   padding: 1rem 2rem;
-  border-radius: 0 0 20px 20px;
+  border-radius: 20px;
+  margin-bottom: 2rem;
 }
 
-.admin-header-left {
+.navbar-left {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background-color: transparent;
+  gap: 1rem;
 }
 
 .admin-logo {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  background: transparent;
+  width: 50px;
+  height: 50px;
 }
 
 .admin-name {
-  font-size: 22px;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--dark-red);
-  background-color: var(--rozasaslike);
+}
+
+.navbar-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.search-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link-admin {
+  color: var(--dark-red);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.3s;
+  text-transform: uppercase;
+}
+
+
+.search-bar {
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 2px solid var(--blue);
+  width: 100%;
+  font-size: 1rem;
+  background-color: white;
 }
 
 .logout-button {
-  background-color: #e53935; /* crvena boja */
+  background-color: var(--red);
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-left: 20px; /* razmak od search forme */
+  text-transform: uppercase;
 }
 
 .logout-button:hover {
-  background-color: #c62828; /* tamnija crvena kad hover */
+  background-color: var(--dark-red);
 }
-
-
 
 .admin-panel-body {
   display: flex;
-  padding: 2rem;
   gap: 2rem;
+  align-items: flex-start;
 }
 
 .admin-sidebar {
-  width: 220px;
-  min-width: 220px; /* Dodaj ovo */
-  flex-shrink: 0;   /* Dodaj ovo */
-  background-color: var(--bijela);
+  width: 250px;
+  min-width: 250px;
+  flex-shrink: 0;
+  background-color: transparent;
   padding: 1.5rem;
   border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .admin-sidebar-group button {
   width: 100%;
-  padding: 0.75rem;
-  font-size: 16px;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  text-align: center;
   border: none;
-  margin: 10px auto;
-  border-radius: 20px;
+  margin: 0.5rem 0;
+  border-radius: 12px;
   background-color: var(--blue);
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .admin-sidebar-group button:hover {
@@ -105,33 +136,50 @@ body {
 
 .admin-main-content {
   flex-grow: 1;
-  background-color: var(--bijela);
+  background-color: transparent;
   border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .user-list-title {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: var(--dark-red);
   margin-bottom: 1.5rem;
+  font-weight: bold;
+  text-align: center
+}
+
+.user-list,
+.question-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .user-card-container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
-.user-card {
-  background-color: var(--bijela);
+.user-card,
+.question-item {
+  background-color: white;
   padding: 1rem;
-  border-radius: 20px;
+  border-radius: 12px;
   border: 2px solid var(--dark-red);
-  margin: 0.5rem 0;
   color: var(--tekst);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-card p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.user-card strong {
+  color: var(--tekst);
+  font-weight: bold;
 }
 
 .user-card button {
@@ -139,65 +187,55 @@ body {
   color: white;
   border: none;
   padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s;
   font-size: 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-
-.no-users-msg {
-  font-size: 16px;
-  color: var(--navy);
+.user-card button:hover {
+  background-color: var(--dark-red);
 }
 
-.questions-section {
-  margin-top: 2rem;
+.custom-form {
+  border-radius: 12px;
+  border: 2px solid var(--dark-red);
   padding: 1.5rem;
-  background-color: var(--bijela);
-  border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.questions-section h2 {
-  color: var(--dark-red);
-  margin-bottom: 1rem;
-}
-
-.question-form {
-  display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
 }
 
-.question-form input {
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  border: 2px solid var(--red);
-  font-size: 16px;
-  background-color: var(--cream);
+.custom-form input,
+.custom-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--bijela);
 }
 
-.question-form button {
-  padding: 0.75rem;
-  background-color: var(--blue);
+.custom-form button {
+  background-color: var(--navy);
   color: white;
+  padding: 12px 20px;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.question-form button:hover {
-  background-color: var(--navy);
+.custom-form button:hover {
+  background-color: var(--blue);
 }
 
 .question-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -207,71 +245,20 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--cream);
-  border: 2px solid var(--dark-red);
-  border-radius: 15px;
-  padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .question-item button {
-  background-color: var(--crvena);
+  background-color: var(--red);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   font-size: 14px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 .question-item button:hover {
-  background-color: #a00000;
-}
-
-
-.custom-form {
-  max-width: 500px;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  color: var(--tekst);
-  border:  2px solid var(--dark-red);
-}
-
-.custom-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: var(--navy);
-}
-
-.custom-form input,
-.custom-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid var(--blue);
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: var(--bijela);
-  color: var(--tekst);
-  box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.custom-form button {
-  background-color: var(--navy);
-  color: var(--bijela);
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.custom-form button:hover {
-  background-color: var(--navy);
+  background-color: var(--dark-red);
 }
 

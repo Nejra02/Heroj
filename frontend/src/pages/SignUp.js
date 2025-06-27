@@ -20,6 +20,17 @@ const handleChange = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  const { ime, prezime, username, email, password, confirmPassword } = formData;
+
+  if (!ime || !prezime || !username || !email || !password || !confirmPassword) {
+    Swal.fire({
+      title: 'Greška',
+      text: 'Sva polja su obavezna!',
+      icon: 'warning',
+    });
+    return;
+  }
+
   if (formData.password !== formData.confirmPassword) {
      Swal.fire({
         title: 'Šifre se ne podudaraju!',
@@ -107,17 +118,6 @@ const handleSubmit = async (e) => {
                 <input type="password" className="form-control" id="confirmPassword" placeholder="Potvrdi šifru" value={formData.confirmPassword} onChange={handleChange}  />
               </div>
               <button type="submit" className="btn btn-danger w-100 mb-3">Postani heroj</button>
-              {/* AKO BUDEMO HTJELI DODATI LOG IN PREKO GOOGLE
-              <div className="text-center">
-                <p className="text-muted">Ili prijavi se sa</p>
-                <div className="d-flex justify-content-center gap-3">
-                  <button type="button" className="btn btn-outline-secondary rounded-circle social-btn">
-                    <i className="bi bi-google"></i>
-                  </button>
-                 
-                </div>
-              </div>
-              */}
             </form>
           </div>
         </div>

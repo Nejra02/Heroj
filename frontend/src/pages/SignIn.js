@@ -15,6 +15,15 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      Swal.fire({
+        title: 'Greška',
+        text: 'Sva polja su obavezna!',
+        icon: 'warning',
+      });
+      return;
+    }
+
     const formData = new URLSearchParams();
     formData.append("username", email); 
     formData.append("password", password);
@@ -106,25 +115,8 @@ const SignIn = () => {
                 <label htmlFor="password" className="form-label">Šifra</label>
                 <input type="password" className="form-control" id="password" placeholder="Unesi šifru"  value={password} onChange={(e) => setPassword(e.target.value)}/>
               </div>
-              <div className="d-flex justify-content-between mb-4">
-                <div className="form-check">
-                  <input className="form-check-input" type="checkbox" id="remember" />
-                  <label className="form-check-label" htmlFor="remember">Zapamti me</label>
-                </div>
-                <a href="#" className="text-link">Zaboravljena šifra?</a>
-              </div>
+              
               <button type="submit" className="btn btn-danger w-100 mb-3">Prijavi se</button>
-              {/* AKO BUDEMO HTJELI DODATI LOG IN PREKO GOOGLE
-              <div className="text-center">
-                <p className="text-muted">Ili prijavi se sa</p>
-                <div className="d-flex justify-content-center gap-3">
-                  <button type="button" className="btn btn-outline-secondary rounded-circle social-btn">
-                    <i className="bi bi-google"></i>
-                  </button>
-                 
-                </div>
-              </div>
-              */}
             </form>
           </div>
         </div>

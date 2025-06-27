@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import "../styles/main.css";
+import "../styles/landingpage.css";
 import "../styles/AdminDashboard.css";
 import Swal from 'sweetalert2';
 
@@ -291,202 +292,211 @@ export default function UserAdminPanel() {
 
 
   return (
-    <div className="admin-panel-wrapper">
-      <header className="dashboard-header">
-        <div className="admin-header-left">
-          <img src="/logo.png" alt="Logo" className="admin-logo" />
-          <span className="admin-name">Admin</span>
-        </div>
-        <form className="search-form" onSubmit={handleSearch}>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Pretraži simptome..."
-          />
-        </form>
-        <div className="nav-links">
-          <Link to="/kviz">Kviz</Link>
-          <Link to="/edukacija">Edukacija</Link>
-          <a href="/forum">Forum</a>
-        </div>
-        <button className="logout-button" onClick={handleLogout}>Odjavi se</button>
-      </header>
+    <div className="landing-wrapper">
+      <div className="main-bubble">
+        <nav className="navbar inside-bubble-nav">
+          <div className="navbar-left">
+            <img src="/logo.png" alt="Logo" className="admin-logo" />
+            <span className="admin-name">Admin</span>
+          </div>
+          <div className="navbar-center">
+            <form onSubmit={handleSearch} className="search-form">
+              <input
+                type="text"
+                className="search-bar"
+                placeholder="Pretraži simptome..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </form>
+          </div>
+          <div className="navbar-right">
+            <Link to="/kviz" className="nav-link-admin">KVIZ</Link>
+            <Link to="/edukacija" className="nav-link-admin">EDUKACIJA</Link>
+            <Link to="/forum" className="nav-link-admin">FORUM</Link>
+            <button className="logout-button" onClick={handleLogout}>
+              Odjavi se
+            </button>
+          </div>
+        </nav>
 
-      <div className="admin-panel-body">
-        <aside className="admin-sidebar">
-          <div className="admin-sidebar-group">
-            <button onClick={() => handleSectionChange("users")}>
-              {activeSection === "users" ? "Sakrij korisnike" : "Prikaži korisnike"}
-            </button>
-          </div>
-          <div className="admin-sidebar-group">
-            <button onClick={() => handleSectionChange("questions")}>
-              {activeSection === "questions" ? "Sakrij pitanja" : "Prikaži pitanja"}
-            </button>
-          </div>
-          <div className="admin-sidebar-group">
-            <button onClick={() => handleSectionChange("add")}>
-              {activeSection === "add" ? "Sakrij formu za pitanje" : "Dodaj pitanje"}
-            </button>
-          </div>
-          <div className="admin-sidebar-group">
-            <button onClick={() => handleSectionChange("add-technique")}>
-              {activeSection === "add-technique" ? "Sakrij formu za osnovnu tehniku" : "Dodaj osnovnu tehniku"}
-            </button>
-          </div>
-          <div className="admin-sidebar-group">
-            <button onClick={() => handleSectionChange("add-injury")}>
-              {activeSection === "add-injury" ? "Sakrij formu za pristupanje povredi" : "Dodaj pristupanje povredi"}
-            </button>
-          </div>
-          <div className="admin-sidebar-group">
-            <button onClick={() => handleSectionChange("add-video")}>
-              {activeSection === "add-video" ? "Sakrij formu za video" : "Dodaj video"}
-            </button>
-          </div>
-        </aside>
-
-
-        <main className="admin-main-content">
-          {activeSection === "users" && (
-            <>
-              <h2 className="user-list-title">Registrovani korisnici</h2>
-              <div className="user-list">
-                {loadingUsers ? (
-                  <p>Učitavanje korisnika...</p>
-                ) : errorUsers ? (
-                  <p style={{ color: "red" }}>{errorUsers}</p>
-                ) : regularUsers.length === 0 ? (
-                  <p className="no-users-msg">Nema korisnika.</p>
-                ) : (
-                  regularUsers.map((user) => (
-                    <div key={user.user_id} className="user-card">
-                      <p><strong>Korisničko ime:</strong> {user.username}</p>
-                      <p><strong>Email:</strong> {user.email}</p>
-                    </div>
-                  ))
-                )}
+        {isAuthorized === true && (
+          <div className="admin-panel-body">
+            <aside className="admin-sidebar">
+              <div className="admin-sidebar-group">
+                <button onClick={() => handleSectionChange("users")}>
+                  {activeSection === "users" ? "Sakrij korisnike" : "Prikaži korisnike"}
+                </button>
               </div>
-            </>
-          )}
-
-          {activeSection === "questions" && (
-            <>
-              <h2 className="user-list-title">Sva pitanja</h2>
-              <div className="question-card-container">
-                {loadingQuestions ? (
-                  <p>Učitavanje pitanja...</p>
-                ) : errorQuestions ? (
-                  <p style={{ color: "red" }}>{errorQuestions}</p>
-                ) : questions.length === 0 ? (
-                  <p className="no-users-msg">Nema dostupnih pitanja.</p>
-                ) : (
-                  questions.map((q) => (
-                    <div key={q.pitanja_id} className="user-card">
-                      <p><strong>Pitanje:</strong> {q.pitanje}</p>
-                      <p><strong>Tačan:</strong> {q.tacan}</p>
-                      <p><strong>Netačan 1:</strong> {q.netacan1}</p>
-                      <p><strong>Netačan 2:</strong> {q.netacan2}</p>
-                      <button onClick={() => handleDeleteQuestion(q.pitanja_id)}>Obriši</button>
-                    </div>
-                  ))
-                )}
+              <div className="admin-sidebar-group">
+                <button onClick={() => handleSectionChange("questions")}>
+                  {activeSection === "questions" ? "Sakrij pitanja" : "Prikaži pitanja"}
+                </button>
               </div>
-            </>
-          )}
+              <div className="admin-sidebar-group">
+                <button onClick={() => handleSectionChange("add")}>
+                  {activeSection === "add" ? "Sakrij formu za pitanje" : "Dodaj pitanje"}
+                </button>
+              </div>
+              <div className="admin-sidebar-group">
+                <button onClick={() => handleSectionChange("add-technique")}>
+                  {activeSection === "add-technique" ? "Sakrij formu za osnovnu tehniku" : "Dodaj osnovnu tehniku"}
+                </button>
+              </div>
+              <div className="admin-sidebar-group">
+                <button onClick={() => handleSectionChange("add-injury")}>
+                  {activeSection === "add-injury" ? "Sakrij formu za pristupanje povredi" : "Dodaj pristupanje povredi"}
+                </button>
+              </div>
+              <div className="admin-sidebar-group">
+                <button onClick={() => handleSectionChange("add-video")}>
+                  {activeSection === "add-video" ? "Sakrij formu za video" : "Dodaj video"}
+                </button>
+              </div>
+            </aside>
 
-          {activeSection === "add" && (
-            <div className="add-question-form">
-              <h2 className="user-list-title">Dodaj novo pitanje</h2>
-              <form onSubmit={handleAddQuestion} className="custom-form">
-                <input
-                  type="text"
-                  placeholder="Pitanje"
-                  value={newQ.pitanje}
-                  onChange={(e) => setNewQ({ ...newQ, pitanje: e.target.value })}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Tačan odgovor"
-                  value={newQ.tacan}
-                  onChange={(e) => setNewQ({ ...newQ, tacan: e.target.value })}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Netačan odgovor 1"
-                  value={newQ.netacan1}
-                  onChange={(e) => setNewQ({ ...newQ, netacan1: e.target.value })}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Netačan odgovor 2"
-                  value={newQ.netacan2}
-                  onChange={(e) => setNewQ({ ...newQ, netacan2: e.target.value })}
-                  required
-                />
-                <button type="submit">Dodaj pitanje</button>
-              </form>
-            </div>
-          )}
+            <main className="admin-main-content">
+              {activeSection === "users" && (
+                <>
+                  <h2 className="user-list-title">Registrovani korisnici</h2>
+                  <div className="user-list">
+                    {loadingUsers ? (
+                      <p>Učitavanje korisnika...</p>
+                    ) : errorUsers ? (
+                      <p style={{ color: "red" }}>{errorUsers}</p>
+                    ) : regularUsers.length === 0 ? (
+                      <p className="no-users-msg">Nema korisnika.</p>
+                    ) : (
+                      regularUsers.map((user) => (
+                        <div key={user.user_id} className="user-card">
+                          <p><strong>Korisničko ime:</strong> {user.username}</p>
+                          <p><strong>Email:</strong> {user.email}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </>
+              )}
 
-          {activeSection === "add-technique" && (
-            <form onSubmit={handleAddOsnovnaTehnika} className="custom-form">
-              <h2>Dodaj osnovnu tehniku</h2>
-              <input
-                type="text"
-                placeholder="Naziv tehnike"
-                value={novaTehnikaNaziv}
-                onChange={(e) => setNovaTehnikaNaziv(e.target.value)}
-                required
-              />
-              <textarea
-                placeholder="Opis tehnike"
-                value={novaTehnikaOpis}
-                onChange={(e) => setNovaTehnikaOpis(e.target.value)}
-                required
-              ></textarea>
-              <button type="submit">Dodaj tehniku</button>
-            </form>
-          )}
+              {activeSection === "questions" && (
+                <>
+                  <div className="question-card-container">
+                    <h2 className="user-list-title">Sva pitanja</h2>
+                    {loadingQuestions ? (
+                      <p>Učitavanje pitanja...</p>
+                    ) : errorQuestions ? (
+                      <p style={{ color: "red" }}>{errorQuestions}</p>
+                    ) : questions.length === 0 ? (
+                      <p className="no-users-msg">Nema dostupnih pitanja.</p>
+                    ) : (
+                      questions.map((q) => (
+                        <div key={q.pitanja_id} className="user-card">
+                          <p><strong>Pitanje:</strong> {q.pitanje}</p>
+                          <p><strong>Tačan:</strong> {q.tacan}</p>
+                          <p><strong>Netačan 1:</strong> {q.netacan1}</p>
+                          <p><strong>Netačan 2:</strong> {q.netacan2}</p>
+                          <button onClick={() => handleDeleteQuestion(q.pitanja_id)}>Obriši</button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </>
+              )}
 
-          {activeSection === "add-injury" && (
-            <form onSubmit={handleAddPovreda} className="custom-form">
-              <h2>Dodaj postupanje kod povreda</h2>
-              <input
-                type="text"
-                placeholder="Naziv povrede"
-                value={novaPovredaNaziv}
-                onChange={(e) => setNovaPovredaNaziv(e.target.value)}
-                required
-              />
-              <textarea
-                placeholder="Opis povrede"
-                value={novaPovredaOpis}
-                onChange={(e) => setNovaPovredaOpis(e.target.value)}
-                required
-              ></textarea>
-              <button type="submit">Dodaj povredu</button>
-            </form>
-          )}
+              {activeSection === "add" && (
+                <div className="add-question-form">
+                  
+                  <form onSubmit={handleAddQuestion} className="custom-form">
+                    <h2>Dodaj novo pitanje</h2>
+                    <input
+                      type="text"
+                      placeholder="Pitanje"
+                      value={newQ.pitanje}
+                      onChange={(e) => setNewQ({ ...newQ, pitanje: e.target.value })}
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Tačan odgovor"
+                      value={newQ.tacan}
+                      onChange={(e) => setNewQ({ ...newQ, tacan: e.target.value })}
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Netačan odgovor 1"
+                      value={newQ.netacan1}
+                      onChange={(e) => setNewQ({ ...newQ, netacan1: e.target.value })}
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Netačan odgovor 2"
+                      value={newQ.netacan2}
+                      onChange={(e) => setNewQ({ ...newQ, netacan2: e.target.value })}
+                      required
+                    />
+                    <button type="submit">Dodaj pitanje</button>
+                  </form>
+                </div>
+              )}
 
-          {activeSection === "add-video" && (
-            <form onSubmit={handleAddVideo} className="custom-form">
-              <h2>Dodaj video</h2>
-              <input
-                type="text"
-                placeholder="YouTube Link"
-                value={noviVideoLink}
-                onChange={(e) => setNoviVideoLink(e.target.value)}
-                required
-              />
-              <button type="submit">Dodaj video</button>
-            </form>
-          )}
-        </main>
+              {activeSection === "add-technique" && (
+                <form onSubmit={handleAddOsnovnaTehnika} className="custom-form">
+                  <h2>Dodaj osnovnu tehniku</h2>
+                  <input
+                    type="text"
+                    placeholder="Naziv tehnike"
+                    value={novaTehnikaNaziv}
+                    onChange={(e) => setNovaTehnikaNaziv(e.target.value)}
+                    required
+                  />
+                  <textarea
+                    placeholder="Opis tehnike"
+                    value={novaTehnikaOpis}
+                    onChange={(e) => setNovaTehnikaOpis(e.target.value)}
+                    required
+                  ></textarea>
+                  <button type="submit">Dodaj tehniku</button>
+                </form>
+              )}
+
+              {activeSection === "add-injury" && (
+                <form onSubmit={handleAddPovreda} className="custom-form">
+                  <h2>Dodaj postupanje kod povreda</h2>
+                  <input
+                    type="text"
+                    placeholder="Naziv povrede"
+                    value={novaPovredaNaziv}
+                    onChange={(e) => setNovaPovredaNaziv(e.target.value)}
+                    required
+                  />
+                  <textarea
+                    placeholder="Opis povrede"
+                    value={novaPovredaOpis}
+                    onChange={(e) => setNovaPovredaOpis(e.target.value)}
+                    required
+                  ></textarea>
+                  <button type="submit">Dodaj povredu</button>
+                </form>
+              )}
+
+              {activeSection === "add-video" && (
+                <form onSubmit={handleAddVideo} className="custom-form">
+                  <h2>Dodaj video</h2>
+                  <input
+                    type="text"
+                    placeholder="YouTube Link"
+                    value={noviVideoLink}
+                    onChange={(e) => setNoviVideoLink(e.target.value)}
+                    required
+                  />
+                  <button type="submit">Dodaj video</button>
+                </form>
+              )}
+            </main>
+          </div>
+        )}
       </div>
     </div>
   );
