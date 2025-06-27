@@ -130,17 +130,6 @@ export default function Forum() {
             <img src="/logo.png" alt="Logo"/>
             <span className="logo-text">Forum</span>
           </div>
-          <div className="navbar-center">
-            <form className="search-form" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="text"
-                className="search-bar"
-                placeholder="Pretraži forum..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </form>
-          </div>
           <div className="navbar-right">
             <Link to="/kviz" className="nav-link">KVIZ</Link>
             <Link to="/edukacija" className="nav-link">EDUKACIJA</Link>

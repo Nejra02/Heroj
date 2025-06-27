@@ -84,8 +84,6 @@ body {
   border: 2px solid var(--red);
   background-color: white;
   color: var(--red);
-  transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .navbar-right .btn.signup {
@@ -94,10 +92,8 @@ body {
 }
 
 
-.navbar-right .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+
+
 
 /* Hero and grid */
 .top-content {

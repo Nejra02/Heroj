@@ -73,29 +73,6 @@ export default function Edukacija() {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!search.trim()) return;
-    const hostname = window.location.hostname;
-    const apiBase = hostname === "localhost" ? "http://localhost:8000" : `http://${hostname}:8000`;
-    try {
-      const res = await fetch(`${apiBase}/simptomi/search?s=${encodeURIComponent(search)}`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        throw new Error("Simptom nije pronađen.");
-      }
-
-      const data = await res.json();
-      localStorage.setItem("povrede", JSON.stringify(data));
-      localStorage.setItem("search-origin", "edukacija");
-      navigate("/dashboard");
-    } catch (err) {
-      alert(err.message);
-    }
-  };
 
   const handleCardClick = (ref, setOpenState) => {
     setOpenState(true);
@@ -104,6 +81,17 @@ export default function Edukacija() {
     }, 100);
   };
 
+  function getEmbedUrl(link) {
+  try {
+    const url = new URL(link);
+    const videoId = url.searchParams.get("v");
+    return `https://www.youtube.com/embed/${videoId}`;
+  } catch {
+    return null;
+  }
+}
+
+
   return (
     <div className="landing-wrapper">
       <div className="main-bubble">
@@ -111,17 +99,6 @@ export default function Edukacija() {
           <div className="navbar-left">
             <img src="/logo.png" alt="Heroj Logo" />
             <span className="logo">Budi nečiji heroj !</span>
-          </div>
-          <div className="navbar-center">
-            <form onSubmit={handleSearch} className="search-form">
-              <input
-                  type="text"
-                  className="search-bar"
-                  placeholder="Pretraži simptome..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-              />
-            </form>
           </div>
           <div className="navbar-right">
             <Link to="/kviz">Kviz</Link>
@@ -230,7 +207,7 @@ export default function Edukacija() {
                   <iframe
                     width="100%"
                     height="315"
-                    src={v.link}
+                    src={getEmbedUrl(v.link)}
                     title={`Video ${index + 1}`}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -199,9 +199,7 @@
   cursor: pointer;
 }
 
-.kviz-btn.back:hover {
-  text-decoration: underline;
-}
+
 
 .kviz-rezultat {
   font-size: 1.2rem;

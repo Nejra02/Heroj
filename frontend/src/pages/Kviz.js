@@ -130,17 +130,6 @@ export default function Kviz() {
                         <img src="/logo.png" alt="Logo" />
                         <span className="logo-text">Heroj</span>
                     </div>
-                    <div className="navbar-center">
-                        <form className="search-form" onSubmit={(e) => e.preventDefault()}>
-                            <input
-                                type="text"
-                                className="search-bar"
-                                placeholder="Pretraži simptome..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </form>
-                    </div>
                     <div className="navbar-right">
                         <button onClick={handlePovratak} className="logout-button">
                             Nazad

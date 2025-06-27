@@ -5,7 +5,7 @@ import bcrypt
 class User(SQLModel, table=True):
     user_id: Optional[int] = Field(default=None, primary_key=True)
     username: str
-    password: str  # hashirani password
+    password: str 
     role: str
     email: str
 

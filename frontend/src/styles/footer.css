@@ -1,6 +1,6 @@
 .custom-footer {
     background-color: #ee2e24;
-    height: 70px; /* ili zamijeni kad saznam tačnu visinu navbar-a */
+    height: 70px;
     display: flex;
     justify-content: space-around;
     align-items: center;

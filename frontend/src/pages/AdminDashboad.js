@@ -380,8 +380,8 @@ export default function UserAdminPanel() {
 
               {activeSection === "questions" && (
                 <>
-                  <h2 className="user-list-title">Sva pitanja</h2>
                   <div className="question-card-container">
+                    <h2 className="user-list-title">Sva pitanja</h2>
                     {loadingQuestions ? (
                       <p>Učitavanje pitanja...</p>
                     ) : errorQuestions ? (
@@ -405,8 +405,9 @@ export default function UserAdminPanel() {
 
               {activeSection === "add" && (
                 <div className="add-question-form">
-                  <h2 className="user-list-title">Dodaj novo pitanje</h2>
+                  
                   <form onSubmit={handleAddQuestion} className="custom-form">
+                    <h2>Dodaj novo pitanje</h2>
                     <input
                       type="text"
                       placeholder="Pitanje"
